@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en" data-resolution="custom">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1200, height=1000" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Outfit"; src: url("assets/outfit-400.ttf") format("truetype"); font-weight: 400; font-display: block; }
+      @font-face { font-family: "Outfit"; src: url("assets/outfit-700.ttf") format("truetype"); font-weight: 700; font-display: block; }
+      :root { --ink: #121212; --paper: #ffffff; --accent: #8a5a2b; --ui: "Outfit", system-ui, sans-serif; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1200px; height: 1000px; overflow: hidden; background: var(--ink); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ink); font-family: var(--ui); }
+      .full { position: absolute; inset: 0; }
+      .cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+      #win { clip-path: inset(0 47% 0 47%); }
+      #kb { position: absolute; inset: 0; transform-origin: 50% 45%; }
+      .col { position: absolute; top: 0; bottom: 0; width: 300px; overflow: hidden; }
+      .col img { position: absolute; top: 0; width: 1200px; height: 1000px; object-fit: cover; }
+      .col .over { z-index: 2; }
+      #col0 { left: 0; } #col0 img { left: 0; }
+      #col1 { left: 300px; } #col1 img { left: -300px; }
+      #col2 { left: 600px; } #col2 img { left: -600px; }
+      #col3 { left: 900px; } #col3 img { left: -900px; }
+      #shade { background: #121212; opacity: 0.16; }
+
+      #sheen-wrap { transform: skewX(-18deg); overflow: hidden; }
+      #sheen { position: absolute; top: -100px; bottom: -100px; left: 0; width: 160px; background: #ffffff; opacity: 0.16; }
+
+      #cwrap { clip-path: circle(0% at 50% 50%); }
+      #cshade { background: #121212; opacity: 0.58; }
+
+      #snow { overflow: hidden; }
+      .flake { position: absolute; top: 0; border-radius: 50%; background: #ffffff; opacity: 0; }
+
+      .frame { position: absolute; background: #ffffff; }
+      #f-top { left: 32px; right: 32px; top: 32px; height: 2px; transform-origin: 0% 50%; }
+      #f-bottom { left: 32px; right: 32px; bottom: 32px; height: 2px; transform-origin: 100% 50%; }
+      #f-left { left: 32px; top: 32px; bottom: 32px; width: 2px; transform-origin: 50% 100%; }
+      #f-right { right: 32px; top: 32px; bottom: 32px; width: 2px; transform-origin: 50% 0%; }
+      #prog { position: absolute; left: 32px; right: 32px; bottom: 30px; height: 6px; background: var(--accent); transform-origin: 0% 50%; }
+
+      #mark { position: absolute; left: 68px; top: 66px; overflow: hidden; }
+      #mark p { font: 400 28px/1.2 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: #ffffff; }
+      #mark b { font-weight: 700; }
+
+      #ghost { position: absolute; left: 66px; top: 96px; white-space: nowrap; }
+      #ghost .gw { display: block; overflow: hidden; padding: 0 0 12px; }
+      #ghost .gc { display: inline-block; font: 700 200px/1 var(--ui); letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.2); }
+
+      #panel { position: absolute; left: 68px; bottom: 68px; width: 560px; overflow: hidden; }
+      #panel-inner { background: var(--paper); padding: 40px 44px 42px; }
+      #label { font: 700 28px/1 var(--ui); letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+      #rule { width: 84px; height: 3px; background: var(--accent); margin: 22px 0 22px; transform-origin: 0% 50%; }
+      .mask { overflow: hidden; padding-bottom: 6px; }
+      .line1, .line2 { font-family: var(--ui); font-size: 62px; line-height: 1.04; letter-spacing: -0.02em; color: var(--ink); white-space: nowrap; }
+      .line1 { font-weight: 700; } .line2 { font-weight: 400; }
+      .ch { display: inline-block; }
+      #cta { margin-top: 26px; display: inline-block; }
+      #cta p { font: 700 28px/1 var(--ui); letter-spacing: 0.06em; color: var(--ink); }
+      #cta-line { height: 3px; background: var(--ink); margin-top: 10px; transform-origin: 0% 50%; }
+
+      #rows { position: absolute; left: 68px; bottom: 90px; width: 540px; }
+      .row { position: relative; height: 72px; margin-top: 12px; overflow: hidden; }
+      .row-bg { position: absolute; inset: 0; background: #121212; opacity: 0.78; transform-origin: 0% 50%; }
+      .row-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--accent); transform-origin: 50% 100%; }
+      .row p { position: absolute; left: 32px; top: 0; bottom: 0; display: flex; align-items: center; font: 700 36px/1 var(--ui); color: #ffffff; letter-spacing: -0.01em; }
+
+      #end { position: absolute; left: 68px; right: 68px; top: 250px; }
+      #end-mark { overflow: hidden; }
+      #end-mark p { font: 400 28px/1.2 var(--ui); letter-spacing: 0.14em; text-transform: uppercase; color: #ffffff; }
+      #end-mark b { font-weight: 700; }
+      #end-rule { width: 84px; height: 3px; background: var(--accent); margin: 24px 0 28px; transform-origin: 0% 50%; }
+      .end-line { overflow: hidden; padding-bottom: 6px; }
+      .end-line p { font: 700 88px/1.02 var(--ui); letter-spacing: -0.025em; color: #ffffff; white-space: nowrap; }
+      .end-line.two p { font-weight: 400; }
+      #end-cta { margin-top: 36px; display: inline-block; }
+      #end-cta p { font: 700 30px/1 var(--ui); letter-spacing: 0.06em; color: #ffffff; }
+      #end-cta-line { height: 3px; background: #ffffff; margin-top: 12px; transform-origin: 0% 50%; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="lux-2" data-start="0" data-duration="12.8" data-width="1200" data-height="1000">
+      <div id="win" class="clip full" data-start="0" data-duration="12.8" data-track-index="0">
+        <div id="kb" data-layout-allow-overflow>
+          <div id="col0" class="col" data-layout-allow-overflow><img class="under" src="assets/short-sleeve.jpg" style="object-position: 50% 38%" alt="" /><img class="over" src="assets/caps-portrait.jpg" style="object-position: 50% 34%" alt="" /></div><div id="col1" class="col" data-layout-allow-overflow><img class="under" src="assets/short-sleeve.jpg" style="object-position: 50% 38%" alt="" /><img class="over" src="assets/caps-portrait.jpg" style="object-position: 50% 34%" alt="" /></div><div id="col2" class="col" data-layout-allow-overflow><img class="under" src="assets/short-sleeve.jpg" style="object-position: 50% 38%" alt="" /><img class="over" src="assets/caps-portrait.jpg" style="object-position: 50% 34%" alt="" /></div><div id="col3" class="col" data-layout-allow-overflow><img class="under" src="assets/short-sleeve.jpg" style="object-position: 50% 38%" alt="" /><img class="over" src="assets/caps-portrait.jpg" style="object-position: 50% 34%" alt="" /></div>
+        </div>
+        <div id="shade" class="full"></div>
+      </div>
+
+      <div id="cwrap" class="clip full" data-start="0" data-duration="12.8" data-track-index="1">
+        <img id="pc" class="cover" src="assets/hero-yellow-puffer.jpg" style="object-position: 50% 62%" alt="" />
+        <div id="cshade" class="full"></div>
+      </div>
+
+      <div id="snow" class="clip full" data-start="0" data-duration="12.8" data-track-index="2" data-layout-ignore>
+        <div class="flake" id="fl0" style="left:0px;width:5px;height:5px"></div><div class="flake" id="fl1" style="left:620px;width:5px;height:5px"></div><div class="flake" id="fl2" style="left:168px;width:4px;height:4px"></div><div class="flake" id="fl3" style="left:261px;width:6px;height:6px"></div><div class="flake" id="fl4" style="left:369px;width:6px;height:6px"></div><div class="flake" id="fl5" style="left:16px;width:4px;height:4px"></div><div class="flake" id="fl6" style="left:1150px;width:4px;height:4px"></div><div class="flake" id="fl7" style="left:1139px;width:4px;height:4px"></div><div class="flake" id="fl8" style="left:1199px;width:7px;height:7px"></div><div class="flake" id="fl9" style="left:1142px;width:7px;height:7px"></div><div class="flake" id="fl10" style="left:1141px;width:5px;height:5px"></div><div class="flake" id="fl11" style="left:1113px;width:7px;height:7px"></div><div class="flake" id="fl12" style="left:57px;width:3px;height:3px"></div><div class="flake" id="fl13" style="left:451px;width:5px;height:5px"></div><div class="flake" id="fl14" style="left:660px;width:7px;height:7px"></div><div class="flake" id="fl15" style="left:678px;width:4px;height:4px"></div><div class="flake" id="fl16" style="left:639px;width:4px;height:4px"></div><div class="flake" id="fl17" style="left:191px;width:7px;height:7px"></div><div class="flake" id="fl18" style="left:1054px;width:5px;height:5px"></div><div class="flake" id="fl19" style="left:1048px;width:4px;height:4px"></div><div class="flake" id="fl20" style="left:1px;width:3px;height:3px"></div><div class="flake" id="fl21" style="left:380px;width:6px;height:6px"></div><div class="flake" id="fl22" style="left:784px;width:5px;height:5px"></div><div class="flake" id="fl23" style="left:550px;width:4px;height:4px"></div><div class="flake" id="fl24" style="left:979px;width:5px;height:5px"></div><div class="flake" id="fl25" style="left:125px;width:5px;height:5px"></div><div class="flake" id="fl26" style="left:472px;width:3px;height:3px"></div><div class="flake" id="fl27" style="left:338px;width:4px;height:4px"></div><div class="flake" id="fl28" style="left:506px;width:5px;height:5px"></div><div class="flake" id="fl29" style="left:938px;width:3px;height:3px"></div>
+      </div>
+
+      <div id="sheen-wrap" class="clip full" data-start="0" data-duration="12.8" data-track-index="3">
+        <div id="sheen"></div>
+      </div>
+
+      <div id="ghost" class="clip" data-start="0" data-duration="12.8" data-track-index="4" data-layout-ignore>
+        <span class="gw"><span class="gc" id="gc">COZY</span></span>
+      </div>
+
+      <div id="frame" class="clip full" data-start="0" data-duration="12.8" data-track-index="5">
+        <div id="f-top" class="frame"></div><div id="f-right" class="frame"></div>
+        <div id="f-bottom" class="frame"></div><div id="f-left" class="frame"></div>
+        <div id="prog"></div>
+      </div>
+
+      <div id="mark" class="clip" data-start="0" data-duration="12.8" data-track-index="6" data-layout-allow-overflow>
+        <p id="mark-p" data-layout-ignore data-layout-allow-overflow><b>Puffer Jacket</b> Women</p>
+      </div>
+
+      <div id="panel" class="clip" data-start="0" data-duration="12.8" data-track-index="7">
+        <div id="panel-inner" data-layout-allow-overflow>
+          <p id="label" data-layout-ignore>Caps and hats</p>
+          <div id="rule"></div>
+          <div class="mask"><p class="line1" id="l1" data-layout-ignore><span class="ch">W</span><span class="ch">a</span><span class="ch">r</span><span class="ch">m</span><span class="ch">&nbsp;</span><span class="ch">f</span><span class="ch">r</span><span class="ch">o</span><span class="ch">m</span></p></div>
+          <div class="mask"><p class="line2" id="l2" data-layout-ignore><span class="ch">h</span><span class="ch">e</span><span class="ch">a</span><span class="ch">d</span><span class="ch">&nbsp;</span><span class="ch">t</span><span class="ch">o</span><span class="ch">&nbsp;</span><span class="ch">t</span><span class="ch">o</span><span class="ch">e</span></p></div>
+          <div id="cta"><p>Shop caps and hats</p><div id="cta-line"></div></div>
+        </div>
+      </div>
+
+      <div id="rows" class="clip" data-start="0" data-duration="12.8" data-track-index="8" data-layout-allow-overflow>
+        <div class="row"><div class="row-bg"></div><div class="row-bar"></div><p data-layout-ignore>Knit beanies</p></div><div class="row"><div class="row-bg"></div><div class="row-bar"></div><p data-layout-ignore>Quilted caps</p></div><div class="row"><div class="row-bg"></div><div class="row-bar"></div><p data-layout-ignore>Soft scarves</p></div>
+      </div>
+
+      <div id="end" class="clip" data-start="0" data-duration="12.8" data-track-index="9" data-layout-allow-overflow>
+        <div id="end-mark"><p id="end-mark-p" data-layout-ignore><b>Puffer Jacket</b> Women</p></div>
+        <div id="end-rule"></div>
+        <div class="end-line"><p id="e1" data-layout-ignore><span class="ch">W</span><span class="ch">a</span><span class="ch">r</span><span class="ch">m</span><span class="ch">&nbsp;</span><span class="ch">l</span><span class="ch">a</span><span class="ch">y</span><span class="ch">e</span><span class="ch">r</span><span class="ch">s</span><span class="ch">,</span></p></div>
+        <div class="end-line two"><p id="e2" data-layout-ignore><span class="ch">e</span><span class="ch">v</span><span class="ch">e</span><span class="ch">r</span><span class="ch">y</span><span class="ch">&nbsp;</span><span class="ch">c</span><span class="ch">a</span><span class="ch">t</span><span class="ch">e</span><span class="ch">g</span><span class="ch">o</span><span class="ch">r</span><span class="ch">y</span><span class="ch">.</span></p></div>
+        <div id="end-cta"><p>Shop the collection</p><div id="end-cta-line"></div></div>
+      </div>
+    </div>
+
+    <script>
+      // Three beats in a wide frame.
+      //  A: a slit opens, light sweeps, a ghost word drifts, the title panel
+      //     types itself in.
+      //  B: the photograph splits into four strips that slide away up, down,
+      //     up, down to reveal the next, and three details draw in.
+      //  C: a circle opens onto a third photograph and an end card closes the
+      //     film before it shrinks back to a slit.
+      // Snow falls through every beat, and a tan line along the bottom edge
+      // fills as the film plays.
+      const tl = gsap.timeline({ paused: true });
+      const EXP = "expo.inOut";
+
+      // ---- Beat A
+      tl.fromTo("#win", { clipPath: "inset(0% 47% 0% 47%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: EXP }, 0.2);
+      tl.fromTo("#kb", { scale: 1.4 }, { scale: 1.12, duration: 1.8, ease: "expo.out" }, 0.2);
+      tl.to("#kb", { scale: 1.0, duration: 8.0, ease: "none" }, 2.0);
+      tl.fromTo("#sheen", { x: -400 }, { x: 1800, duration: 1.7, ease: "power2.inOut" }, 1.4);
+
+      tl.fromTo("#gc", { yPercent: 105 }, { yPercent: 0, duration: 1.3, ease: "expo.out" }, 1.6);
+      tl.fromTo("#gc", { x: 0 }, { x: -40, duration: 3.0, ease: "none", immediateRender: false }, 1.6);
+
+      tl.fromTo("#f-top", { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: "power3.inOut" }, 1.2);
+      tl.fromTo("#f-right", { scaleY: 0 }, { scaleY: 1, duration: 1.1, ease: "power3.inOut" }, 1.3);
+      tl.fromTo("#f-bottom", { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: "power3.inOut" }, 1.4);
+      tl.fromTo("#f-left", { scaleY: 0 }, { scaleY: 1, duration: 1.1, ease: "power3.inOut" }, 1.5);
+      tl.fromTo("#prog", { scaleX: 0 }, { scaleX: 1, duration: 10.2, ease: "none" }, 1.6);
+
+      tl.fromTo("#mark-p", { yPercent: 120 }, { yPercent: 0, duration: 0.9, ease: "expo.out" }, 1.9);
+
+      tl.fromTo("#panel-inner", { yPercent: 102 }, { yPercent: 0, duration: 1.1, ease: "expo.out" }, 2.1);
+      tl.fromTo("#label", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 2.7);
+      tl.fromTo("#rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.out" }, 2.8);
+      tl.fromTo("#l1 .ch", { yPercent: 115 }, { yPercent: 0, duration: 0.8, ease: "expo.out", stagger: 0.028 }, 2.9);
+      tl.fromTo("#l2 .ch", { yPercent: 115 }, { yPercent: 0, duration: 0.8, ease: "expo.out", stagger: 0.028 }, 3.2);
+      tl.fromTo("#cta", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.8);
+      tl.fromTo("#cta-line", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 4.0);
+
+      tl.to("#panel-inner", { yPercent: 102, duration: 0.7, ease: "expo.in" }, 4.7);
+      tl.set("#panel-inner", { opacity: 0 }, 5.5);
+      tl.set("#panel-inner", { opacity: 1 }, 0);
+      tl.to("#gc", { yPercent: 105, duration: 0.6, ease: "expo.in" }, 4.7);
+
+      // ---- Beat B: four strips slide away, alternating direction
+      tl.fromTo("#col0 .over", { yPercent: 0 }, { yPercent: -101, duration: 1.2, ease: EXP }, 4.8);
+      tl.fromTo("#col1 .over", { yPercent: 0 }, { yPercent: 101, duration: 1.2, ease: EXP }, 4.92);
+      tl.fromTo("#col2 .over", { yPercent: 0 }, { yPercent: -101, duration: 1.2, ease: EXP }, 5.04);
+      tl.fromTo("#col3 .over", { yPercent: 0 }, { yPercent: 101, duration: 1.2, ease: EXP }, 5.16);
+
+      tl.fromTo(".row-bg", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "expo.out", stagger: 0.14 }, 5.6);
+      tl.fromTo(".row-bar", { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "expo.out", stagger: 0.14 }, 5.7);
+      tl.fromTo(".row p", { xPercent: -30, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.8, ease: "expo.out", stagger: 0.14 }, 5.8);
+
+      tl.to(".row-bg", { scaleX: 0, transformOrigin: "100% 50%", duration: 0.6, ease: "expo.in", stagger: 0.08 }, 7.2);
+      tl.to(".row p", { opacity: 0, duration: 0.3, ease: "power2.in", stagger: 0.08 }, 7.1);
+      tl.to(".row-bar", { scaleY: 0, duration: 0.4, ease: "power2.in", stagger: 0.08 }, 7.2);
+
+      // ---- Beat C: circle opens onto the third photograph, end card
+      tl.fromTo("#cwrap", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(80% at 50% 50%)", duration: 1.5, ease: EXP }, 7.6);
+      tl.fromTo("#pc", { scale: 1.3 }, { scale: 1.0, duration: 3.6, ease: "expo.out" }, 7.6);
+      tl.fromTo("#sheen", { x: -400 }, { x: 1800, duration: 1.7, ease: "power2.inOut", immediateRender: false }, 8.4);
+
+      tl.fromTo("#end-mark-p", { yPercent: 120 }, { yPercent: 0, duration: 0.8, ease: "expo.out" }, 8.6);
+      tl.fromTo("#end-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.out" }, 8.7);
+      tl.fromTo("#e1", { yPercent: 115 }, { yPercent: 0, duration: 0.9, ease: "expo.out" }, 8.8);
+      tl.fromTo("#e2", { yPercent: 115 }, { yPercent: 0, duration: 0.9, ease: "expo.out" }, 8.95);
+      tl.fromTo("#end-cta", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 9.5);
+      tl.fromTo("#end-cta-line", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 9.7);
+
+      // ---- Snow
+      tl.fromTo("#fl0", { y: -30, x: 0, opacity: 0.66 }, { y: 1040, x: 32, opacity: 0.66, duration: 4.34, ease: "none" }, 3.56);
+      tl.fromTo("#fl1", { y: -30, x: 0, opacity: 0.79 }, { y: 1040, x: -25, opacity: 0.79, duration: 5.1, ease: "none" }, 5.09);
+      tl.fromTo("#fl2", { y: -30, x: 0, opacity: 0.53 }, { y: 1040, x: -10, opacity: 0.53, duration: 6.85, ease: "none" }, 6.19);
+      tl.fromTo("#fl3", { y: -30, x: 0, opacity: 0.59 }, { y: 1040, x: -1, opacity: 0.59, duration: 5.97, ease: "none" }, 6.23);
+      tl.fromTo("#fl4", { y: -30, x: 0, opacity: 0.79 }, { y: 1040, x: 6, opacity: 0.79, duration: 4.82, ease: "none" }, 0.71);
+      tl.fromTo("#fl5", { y: -30, x: 0, opacity: 0.74 }, { y: 1040, x: -36, opacity: 0.74, duration: 5.87, ease: "none" }, 9.03);
+      tl.fromTo("#fl6", { y: -30, x: 0, opacity: 0.82 }, { y: 1040, x: 19, opacity: 0.82, duration: 4.26, ease: "none" }, 9.16);
+      tl.fromTo("#fl7", { y: -30, x: 0, opacity: 0.79 }, { y: 1040, x: 40, opacity: 0.79, duration: 6.76, ease: "none" }, 2.18);
+      tl.fromTo("#fl8", { y: -30, x: 0, opacity: 0.51 }, { y: 1040, x: 10, opacity: 0.51, duration: 5.02, ease: "none" }, 4.7);
+      tl.fromTo("#fl9", { y: -30, x: 0, opacity: 0.77 }, { y: 1040, x: -44, opacity: 0.77, duration: 7.0, ease: "none" }, 3.94);
+      tl.fromTo("#fl10", { y: -30, x: 0, opacity: 0.67 }, { y: 1040, x: 31, opacity: 0.67, duration: 5.83, ease: "none" }, 7.05);
+      tl.fromTo("#fl11", { y: -30, x: 0, opacity: 0.59 }, { y: 1040, x: 0, opacity: 0.59, duration: 6.8, ease: "none" }, 4.64);
+      tl.fromTo("#fl12", { y: -30, x: 0, opacity: 0.72 }, { y: 1040, x: -13, opacity: 0.72, duration: 4.55, ease: "none" }, 8.46);
+      tl.fromTo("#fl13", { y: -30, x: 0, opacity: 0.73 }, { y: 1040, x: -29, opacity: 0.73, duration: 5.41, ease: "none" }, 1.61);
+      tl.fromTo("#fl14", { y: -30, x: 0, opacity: 0.81 }, { y: 1040, x: 44, opacity: 0.81, duration: 7.33, ease: "none" }, 1.54);
+      tl.fromTo("#fl15", { y: -30, x: 0, opacity: 0.62 }, { y: 1040, x: 0, opacity: 0.62, duration: 6.27, ease: "none" }, 8.78);
+      tl.fromTo("#fl16", { y: -30, x: 0, opacity: 0.56 }, { y: 1040, x: 36, opacity: 0.56, duration: 6.02, ease: "none" }, 9.74);
+      tl.fromTo("#fl17", { y: -30, x: 0, opacity: 0.65 }, { y: 1040, x: 29, opacity: 0.65, duration: 5.12, ease: "none" }, 7.16);
+      tl.fromTo("#fl18", { y: -30, x: 0, opacity: 0.82 }, { y: 1040, x: -35, opacity: 0.82, duration: 4.94, ease: "none" }, 5.44);
+      tl.fromTo("#fl19", { y: -30, x: 0, opacity: 0.67 }, { y: 1040, x: 32, opacity: 0.67, duration: 5.29, ease: "none" }, 7.8);
+      tl.fromTo("#fl20", { y: -30, x: 0, opacity: 0.82 }, { y: 1040, x: -18, opacity: 0.82, duration: 5.98, ease: "none" }, 0.91);
+      tl.fromTo("#fl21", { y: -30, x: 0, opacity: 0.57 }, { y: 1040, x: 23, opacity: 0.57, duration: 5.78, ease: "none" }, 10.0);
+      tl.fromTo("#fl22", { y: -30, x: 0, opacity: 0.75 }, { y: 1040, x: 0, opacity: 0.75, duration: 5.05, ease: "none" }, 2.92);
+      tl.fromTo("#fl23", { y: -30, x: 0, opacity: 0.75 }, { y: 1040, x: -34, opacity: 0.75, duration: 5.83, ease: "none" }, 5.27);
+      tl.fromTo("#fl24", { y: -30, x: 0, opacity: 0.65 }, { y: 1040, x: 24, opacity: 0.65, duration: 4.88, ease: "none" }, 5.92);
+      tl.fromTo("#fl25", { y: -30, x: 0, opacity: 0.87 }, { y: 1040, x: 1, opacity: 0.87, duration: 4.83, ease: "none" }, 4.27);
+      tl.fromTo("#fl26", { y: -30, x: 0, opacity: 0.6 }, { y: 1040, x: 20, opacity: 0.6, duration: 6.87, ease: "none" }, 8.56);
+      tl.fromTo("#fl27", { y: -30, x: 0, opacity: 0.72 }, { y: 1040, x: 17, opacity: 0.72, duration: 7.14, ease: "none" }, 3.57);
+      tl.fromTo("#fl28", { y: -30, x: 0, opacity: 0.81 }, { y: 1040, x: -43, opacity: 0.81, duration: 6.57, ease: "none" }, 4.81);
+      tl.fromTo("#fl29", { y: -30, x: 0, opacity: 0.5 }, { y: 1040, x: 10, opacity: 0.5, duration: 5.76, ease: "none" }, 8.04);
+
+      // ---- Close
+      tl.to(["#end-mark-p", "#e1", "#e2"], { yPercent: 120, duration: 0.5, ease: "expo.in" }, 11.6);
+      tl.to(["#end-cta", "#end-rule", "#mark-p", "#prog"], { opacity: 0, duration: 0.4, ease: "power2.in" }, 11.6);
+      tl.to(["#f-top", "#f-bottom", "#f-left", "#f-right"], { opacity: 0, duration: 0.5, ease: "power2.in" }, 11.6);
+      tl.fromTo("#win", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 47% 0% 47%)", duration: 1.0, ease: EXP, immediateRender: false }, 11.8);
+      tl.to("#cwrap", { opacity: 0, duration: 0.6, ease: "power2.in" }, 11.8);
+      tl.to("#snow", { opacity: 0, duration: 0.5, ease: "power2.in" }, 11.8);
+
+      window.__timelines["lux-2"] = tl;
+    </script>
+  </body>
+</html>

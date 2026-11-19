@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html lang="en" data-resolution="custom">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Marcellus"; src: url("assets/marcellus.woff2") format("woff2"); font-weight: 400; font-display: block; }
+      @font-face { font-family: "Figtree"; src: url("assets/figtree.woff2") format("woff2"); font-weight: 300 900; font-display: block; }
+      :root { --ink: #121212; --paper: #ffffff; --accent: #6a1e2b; --display: "Marcellus", serif; --ui: "Figtree", sans-serif; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1350px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--paper); }
+      #quilt { position: absolute; inset: 0; }
+      #bands { position: absolute; inset: 0; }
+      .band { position: absolute; left: 0; right: 0; height: 225px; }
+      .band:nth-child(1) { top: 0; } .band:nth-child(2) { top: 225px; } .band:nth-child(3) { top: 450px; }
+      .band:nth-child(4) { top: 675px; } .band:nth-child(5) { top: 900px; } .band:nth-child(6) { top: 1125px; }
+      .puff { position: absolute; left: 0; right: 0; top: 3px; bottom: 3px; background-image: url("assets/white-quilted-jacket.jpg"); background-size: 1080px 1620px; background-repeat: no-repeat; transform-origin: 50% 50%; }
+      #mark { position: absolute; left: 64px; bottom: 72px; }
+      #mark-name { font-family: var(--display); font-size: 40px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); }
+      #mark-rule { width: 120px; height: 3px; background: var(--accent); margin-top: 18px; transform-origin: 0% 50%; }
+      #shade { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; background: linear-gradient(to top, rgba(18,18,18,0.55), rgba(18,18,18,0)); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="hero-quilt" data-start="0" data-duration="6" data-width="1080" data-height="1350">
+      <div id="quilt" class="clip" data-start="0" data-duration="6" data-track-index="0">
+        <div id="bands">
+        <div class="band"><div class="puff" style="background-position: 0 -138px"></div></div>
+        <div class="band"><div class="puff" style="background-position: 0 -363px"></div></div>
+        <div class="band"><div class="puff" style="background-position: 0 -588px"></div></div>
+        <div class="band"><div class="puff" style="background-position: 0 -813px"></div></div>
+        <div class="band"><div class="puff" style="background-position: 0 -1038px"></div></div>
+        <div class="band"><div class="puff" style="background-position: 0 -1263px"></div></div>
+        </div>
+        <div id="shade"></div>
+      </div>
+      <div id="mark-clip" class="clip" data-start="0" data-duration="6" data-track-index="1">
+        <div id="mark"><p id="mark-name">Puffer Jacket Women</p><div id="mark-rule"></div></div>
+      </div>
+    </div>
+    <script>
+      // Each row inflates like a quilted baffle, top to bottom, then settles back for a clean loop.
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#bands", { scale: 1.08 }, { scale: 1, duration: 6, ease: "none" }, 0);
+      tl.fromTo(".puff", { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: "expo.out", stagger: 0.14 }, 0.3);
+      tl.fromTo("#shade", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.out" }, 1.4);
+      tl.fromTo("#mark-name", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 1.8);
+      tl.fromTo("#mark-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.out" }, 2.2);
+      tl.to("#mark-name", { opacity: 0, duration: 0.4, ease: "power2.in" }, 4.8);
+      tl.to("#shade", { opacity: 0, duration: 0.4 }, 4.8);
+      tl.to(".puff", { scaleY: 0, duration: 0.6, ease: "expo.in", stagger: { each: 0.08, from: "end" }, immediateRender: false }, 5.0);
+      window.__timelines["hero-quilt"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+﻿<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Marcellus";
+        src: url("assets/marcellus.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Figtree";
+        src: url("assets/figtree.woff2") format("woff2");
+        font-weight: 300 900;
+        font-style: normal;
+        font-display: block;
+      }
+      :root {
+        --ink: #121212;
+        --paper: #ffffff;
+        --stone: #f5f3ef;
+        --hairline: #ddd9d2;
+        --muted: #5f5b56;
+        --accent: #6a1e2b;
+        --display: "Marcellus", "Times New Roman", serif;
+        --ui: "Figtree", system-ui, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--stone);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--stone);
+      }
+      #headline {
+        position: absolute;
+        left: 160px;
+        top: 140px;
+        width: 1400px;
+      }
+      #headline h1 {
+        font-family: var(--display);
+        font-size: 84px;
+        line-height: 1.04;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      #sub {
+        margin-top: 22px;
+        max-width: 960px;
+        font: 400 30px/1.5 var(--ui);
+        color: var(--muted);
+      }
+      #diagram {
+        position: absolute;
+        left: 282px;
+        top: 360px;
+        width: 1356px;
+        height: 400px;
+      }
+      #channels {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        gap: 16px;
+      }
+      .channel {
+        position: relative;
+        width: 180px;
+        height: 400px;
+        background: var(--paper);
+        border: 3px solid var(--ink);
+      }
+      .fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        background: var(--hairline);
+        transform-origin: 50% 100%;
+      }
+      #labels {
+        position: absolute;
+        left: 282px;
+        top: 812px;
+        width: 1356px;
+        height: 120px;
+      }
+      #labels p {
+        position: absolute;
+        left: 0;
+        top: 24px;
+        font-family: var(--display);
+        font-size: 56px;
+        line-height: 1;
+        color: var(--ink);
+      }
+      #loft-bar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1356px;
+        height: 4px;
+        background: var(--accent);
+        transform-origin: 0% 50%;
+      }
+      #note {
+        position: absolute;
+        left: 282px;
+        top: 960px;
+        width: 1200px;
+        font: 400 28px/1.5 var(--ui);
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="fill-loft"
+      data-start="0"
+      data-duration="9"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="headline" class="clip" data-start="0" data-duration="9" data-track-index="0">
+        <h1>Warmth comes from trapped air</h1>
+        <p id="sub">Stitched channels hold the fill evenly, so the loft stays where it is put.</p>
+      </div>
+
+      <div id="diagram" class="clip" data-start="0" data-duration="9" data-track-index="1">
+        <div id="channels">
+          <div class="channel"><div class="fill"></div></div>
+          <div class="channel"><div class="fill"></div></div>
+          <div class="channel"><div class="fill"></div></div>
+          <div class="channel"><div class="fill"></div></div>
+          <div class="channel"><div class="fill"></div></div>
+          <div class="channel"><div class="fill"></div></div>
+          <div class="channel"><div class="fill"></div></div>
+        </div>
+      </div>
+
+      <div id="labels" class="clip" data-start="0" data-duration="9" data-track-index="2" data-layout-allow-overlap>
+        <div id="loft-bar"></div>
+        <p id="state-low">Less loft</p>
+        <p id="state-high">More loft</p>
+      </div>
+
+      <div id="note-clip" class="clip" data-start="0" data-duration="9" data-track-index="3">
+        <p id="note">A close fit and a sealed hem keep the warm air in.</p>
+      </div>
+    </div>
+
+    <script>
+      // Channels start flat, then inflate as the fill lofts. Every value is
+      // fixed, so each frame is the same on every render.
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#headline h1", { opacity: 1, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0);
+      tl.fromTo("#sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.8);
+
+      // Start from the flat state: the fill sits at 35 percent height.
+      tl.set(".fill", { scaleY: 0.35 }, 0);
+      tl.fromTo(".channel", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out", stagger: 0.06 }, 1.6);
+      tl.fromTo("#state-low", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.0);
+
+      // The fill lofts: each channel inflates to full height in turn.
+      tl.to(".fill", { scaleY: 1, duration: 1.1, ease: "power2.out", stagger: 0.07 }, 2.9);
+      tl.to("#state-low", { opacity: 0, duration: 0.3, ease: "power2.in" }, 3.9);
+      tl.fromTo("#state-high", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 3.9);
+      tl.fromTo("#loft-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.out" }, 4.2);
+
+      tl.fromTo("#note", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 4.4);
+
+      window.__timelines["fill-loft"] = tl;
+    </script>
+  </body>
+</html>

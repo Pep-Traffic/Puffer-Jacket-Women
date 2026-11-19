@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T12:00:00Z",
+  "title": "Design System: Puffer Jacket Women",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#121212",
+        "tonalRamp": ["#0f0f0f", "#101010", "#111111", "#121212", "#4d4d4d", "#888888", "#c4c4c4", "#ffffff"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#0f0f0f", "#5f5f5f", "#afafaf", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
+      },
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "#f5f3ef",
+        "tonalRamp": ["#0f0f0f", "#5c5b5a", "#a8a7a4", "#f5f3ef", "#f8f6f3", "#faf9f7", "#fcfcfb", "#ffffff"]
+      },
+      "tint": {
+        "role": "neutral",
+        "displayName": "Tint",
+        "canonical": "#faf9f6",
+        "tonalRamp": ["#0f0f0f", "#5d5d5c", "#acaba9", "#faf9f6", "#fbfaf8", "#fcfcfa", "#fefefd", "#ffffff"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#ddd9d2",
+        "tonalRamp": ["#0f0f0f", "#545250", "#989691", "#ddd9d2", "#e6e2dd", "#eeece8", "#f6f6f4", "#ffffff"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#5f5b56",
+        "tonalRamp": ["#0f0f0f", "#2a2827", "#44423e", "#5f5b56", "#878480", "#afadaa", "#d7d6d5", "#ffffff"]
+      },
+      "accent-oxblood": {
+        "role": "primary",
+        "displayName": "Oxblood",
+        "canonical": "#6a1e2b",
+        "tonalRamp": ["#0f0f0f", "#2d1418", "#4c1922", "#6a1e2b", "#8f5660", "#b48e95", "#dac7ca", "#ffffff"]
+      },
+      "accent-oxblood-deep": {
+        "role": "primary",
+        "displayName": "Oxblood Deep",
+        "canonical": "#521722",
+        "tonalRamp": ["#0f0f0f", "#251215", "#3c141c", "#521722", "#7d5159", "#a88b90", "#d4c5c8", "#ffffff"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero titles. One per page." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles." },
+      "sub": { "displayName": "Sub", "purpose": "Layer titles and guide section titles." },
+      "closing": { "displayName": "Closing", "purpose": "The closing band and the guide title." },
+      "product": { "displayName": "Product", "purpose": "Product name on product pages." },
+      "marquee": { "displayName": "Marquee", "purpose": "The one strip of category names." },
+      "title": { "displayName": "Title", "purpose": "Card and step headings." },
+      "body": { "displayName": "Body", "purpose": "Running copy, 65ch maximum." },
+      "label": { "displayName": "Label", "purpose": "Navigation, buttons and jump links. Uppercase." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Reveals, photo settle and the stack." },
+      { "name": "reveal", "value": "0.9s, rise 28px and fade in once", "purpose": "Blocks entering view." },
+      { "name": "photo-settle", "value": "1.6s, scale 1.06 to 1", "purpose": "Hero photograph on load." },
+      { "name": "marquee", "value": "42s linear, infinite", "purpose": "The one category strip on the home page. Stops under reduced motion." },
+      { "name": "state-fade", "value": "0.25s ease-out-expo", "purpose": "Button, link and size chip state changes." }
+    ],
+    "breakpoints": [
+      { "name": "wide-grid", "value": "1100px" },
+      { "name": "nav-collapse", "value": "1200px" },
+      { "name": "tablet", "value": "900px" },
+      { "name": "phone", "value": "520px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink action for secondary and utility actions.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Shop all products</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; background: #121212; color: #ffffff; border: 1px solid #121212; font: 600 13px/1 Figtree, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background-color 0.25s, color 0.25s; } .ds-btn-primary:hover { filter: brightness(1.18); } .ds-btn-primary:focus-visible { outline: 2px solid #6a1e2b; outline-offset: 3px; }"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "The one primary action on a screen, such as Shop puffer jackets or Add to bag.",
+      "html": "<a class=\"ds-btn-accent\" href=\"#\">Shop puffer jackets</a>",
+      "css": ".ds-btn-accent { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; background: #6a1e2b; color: #ffffff; border: 1px solid #6a1e2b; font: 600 13px/1 Figtree, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background-color 0.25s, border-color 0.25s; } .ds-btn-accent:hover { background: #521722; border-color: #521722; } .ds-btn-accent:focus-visible { outline: 2px solid #6a1e2b; outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Link",
+      "kind": "nav",
+      "refersTo": "button-ghost",
+      "description": "Secondary action such as Shop all categories or Size guide.",
+      "html": "<a class=\"ds-link-text\" href=\"#\">Shop all categories</a>",
+      "css": ".ds-link-text { display: inline-flex; gap: 8px; font: 600 13px/1 Figtree, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #121212; text-decoration: none; padding-bottom: 6px; border-bottom: 1px solid #121212; } .ds-link-text:focus-visible { outline: 2px solid #6a1e2b; outline-offset: 3px; }"
+    },
+    {
+      "name": "Size Chip",
+      "kind": "chip",
+      "refersTo": "size-chip",
+      "description": "A selectable size. Selected chips invert to an ink fill.",
+      "html": "<button class=\"ds-size\" type=\"button\" aria-pressed=\"true\">M</button>",
+      "css": ".ds-size { min-width: 56px; height: 48px; padding: 0 14px; border: 1px solid #121212; background: #ffffff; color: #121212; font: 500 14px/1 Figtree, system-ui, sans-serif; cursor: pointer; } .ds-size[aria-pressed=\"true\"] { background: #121212; color: #ffffff; } .ds-size:focus-visible { outline: 2px solid #6a1e2b; outline-offset: 3px; }"
+    },
+    {
+      "name": "Photograph",
+      "kind": "card",
+      "refersTo": "photograph",
+      "description": "A fixed-ratio photograph with a stone ground and a caption below. Stock photos are labelled.",
+      "html": "<figure class=\"ds-photo\"><div class=\"ds-photo-box\"><img src=\"/images/caps-portrait.jpg\" alt=\"Woman in a dark cap and wool coat standing in falling snow\"></div><figcaption>Stock photo</figcaption></figure>",
+      "css": ".ds-photo { margin: 0; } .ds-photo-box { position: relative; overflow: hidden; background: #f5f3ef; aspect-ratio: 4 / 5; } .ds-photo-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1); } .ds-photo figcaption { margin-top: 10px; font: 400 13px/1.5 Figtree, system-ui, sans-serif; color: #5f5b56; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Rail",
+    "overview": "The store is a calm, bright rail of outerwear. Photographs of real people in winter clothing carry the product story. Everything else steps back: ink type on white, stone and tint bands between sections, and one oxblood accent that marks only the action the visitor should take next. It is the category standard, played straight and built to the bar of premium US outerwear sites. Premium comes from restraint, even grids, precise type and motion that explains rather than decorates.",
+    "keyCharacteristics": [
+      "Ink on white, with stone and tint bands and one oxblood accent.",
+      "Marcellus display headlines; Figtree UI in small, uppercase, tracked labels.",
+      "Square corners, hairline dividers, no shadows.",
+      "Real photography for every category and every product, labelled as stock photos until the store's own photography is supplied."
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Oxblood marks the single action a visitor should take on a screen. It never decorates, and checkmarks and icons stay ink.", "section": "colors" },
+      { "name": "The Honest Photo Rule", "body": "Every photograph is labelled as a stock photo on product pages. A photograph never implies a real product, price, rating or stock level.", "section": "colors" },
+      { "name": "The Measured Headline Rule", "body": "Display never exceeds 4.9rem (78px), and headlines always wrap with balanced lines.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat. Separation comes from rules and tone, never from shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use one oxblood action per screen (#6a1e2b).",
+      "Do keep headlines in Marcellus at weight 400 and balance their lines.",
+      "Do label every stock photograph on product pages with \"Stock photo\".",
+      "Do keep forms and bag controls flat, with 1px ink borders.",
+      "Do use the named type scale. Add a new step to DESIGN.md before using a new size."
+    ],
+    "donts": [
+      "Don't add shadows, gradients, glass or blur.",
+      "Don't introduce a second accent colour.",
+      "Don't draw line illustrations in place of photographs.",
+      "Don't invent prices, ratings, stock or review counts in copy or structured data.",
+      "Don't use rounded corners or pill shapes.",
+      "Don't centre long body copy; keep the 65ch measure."
+    ]
+  }
+}

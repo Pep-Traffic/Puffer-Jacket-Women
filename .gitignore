@@ -1,0 +1,22 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+.env*.local
+
+# typescript build cache
+*.tsbuildinfo
+
+# hyperframes render artifacts and caches
+hyperframes/**/.hyperframes/
+hyperframes/**/.thumbnails/
+hyperframes/**/node_modules/
+hyperframes/**/renders/

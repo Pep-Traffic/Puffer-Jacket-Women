@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "100px",
+        "createdAt": "2026-11-19T21:34:22.532Z",
+        "reason": "Claude: FooterMark sets 100px only as a measuring baseline, then rescales the line to fit its box; no text renders at 100px"
+      }
+    ]
+  }
+}
