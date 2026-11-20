@@ -13,6 +13,7 @@ import { breadcrumbSchema, faqSchema, itemListSchema } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductCard from "@/components/ProductCard";
 import PhotoFrame from "@/components/PhotoFrame";
+import SectionRail, { type RailItem } from "@/components/SectionRail";
 import JsonLd from "@/components/JsonLd";
 import { FaqList } from "@/components/FaqList";
 import { Reveal, SettleImage, Stagger, StaggerItem } from "@/components/Motion";
@@ -53,6 +54,14 @@ export default async function CategoryPage({ params }: { params: Params }) {
     { name: cat.name, path: `/category/${cat.slug}` },
   ];
 
+  const railItems: RailItem[] = [
+    { id: "about", label: "About" },
+    { id: "looks", label: "Ways to wear" },
+    { id: "before-you-buy", label: "Before you buy" },
+    { id: "styles", label: "Styles" },
+    { id: "questions", label: "Questions" },
+  ];
+
   return (
     <>
       <div className="container crumb-row">
@@ -63,9 +72,20 @@ export default async function CategoryPage({ params }: { params: Params }) {
         <Reveal className="category-hero__copy" y={18}>
           <h1 id="category-heading"><Split>{cat.title}</Split></h1>
           <p className="hero__lede">{cat.intro}</p>
-          <p className="category-hero__best">
-            <span>Best for</span> {cat.bestFor}
-          </p>
+          <dl className="cat-facts">
+            <div>
+              <dt>Best for</dt>
+              <dd>{cat.bestFor}</dd>
+            </div>
+            <div>
+              <dt>Styles</dt>
+              <dd>{list.length}</dd>
+            </div>
+            <div>
+              <dt>Sizes</dt>
+              <dd>{cat.sizing === "apparel" ? "XS to XL" : "One size"}</dd>
+            </div>
+          </dl>
           <ul className="checks checks--compact">
             {cat.tips.map((tip) => (
               <li key={tip}>
@@ -80,28 +100,32 @@ export default async function CategoryPage({ params }: { params: Params }) {
         </SettleImage>
       </section>
 
-      <section className="section" aria-labelledby="about-heading">
-        <div className="container prose-wide">
+      <SectionRail items={railItems} label="On this page" />
+
+      <section id="about" className="section anchored" aria-labelledby="about-heading">
+        <div className="container cat-about">
           <Reveal>
             <h2 id="about-heading"><Split>About {cat.name.toLowerCase()} for women</Split></h2>
           </Reveal>
-          {cat.paragraphs.map((p, i) => (
-            <Reveal key={i} delay={0.05 * i}>
-              <p className="prose">{p}</p>
-            </Reveal>
-          ))}
+          <div className="cat-about__body">
+            {cat.paragraphs.map((p, i) => (
+              <Reveal key={i} delay={0.05 * i}>
+                <p className={i === 0 ? "cat-about__lead" : "prose"}>{p}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="section section--tint" aria-labelledby="looks-heading">
+      <section id="looks" className="section section--tint anchored" aria-labelledby="looks-heading">
         <div className="container">
           <Reveal className="section-intro">
             <h2 id="looks-heading"><Split>Ways to wear {cat.name.toLowerCase()}</Split></h2>
             <p>Three simple combinations to start from. Swap in the colours and trousers you already own.</p>
           </Reveal>
-          <Stagger className="looks">
+          <Stagger className="cat-looks">
             {cat.looks.map((look) => (
-              <StaggerItem key={look.title} className="look">
+              <StaggerItem key={look.title} className="cat-look">
                 <h3>{look.title}</h3>
                 <p>{look.body}</p>
               </StaggerItem>
@@ -110,7 +134,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="checklist-heading">
+      <section id="before-you-buy" className="section anchored" aria-labelledby="checklist-heading">
         <div className="container two-col">
           <Reveal className="panel">
             <h2 id="checklist-heading"><Split>Before you buy</Split></h2>
@@ -133,7 +157,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="section section--stone" aria-labelledby="products-heading">
+      <section id="styles" className="section section--stone anchored cat-styles" aria-labelledby="products-heading">
         <div className="container">
           <Reveal className="section-head">
             <h2 id="products-heading"><Split>{cat.name} styles</Split></h2>
@@ -151,7 +175,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="faq-heading">
+      <section id="questions" className="section anchored" aria-labelledby="faq-heading">
         <div className="container faq-layout">
           <Reveal>
             <h2 id="faq-heading"><Split>{cat.name} questions</Split></h2>
@@ -168,13 +192,13 @@ export default async function CategoryPage({ params }: { params: Params }) {
           <Reveal className="section-head">
             <h2 id="related-heading"><Split>Keep building the outfit</Split></h2>
           </Reveal>
-          <Stagger className="related">
+          <Stagger className="cat-related">
             {related.map((c) => (
               <StaggerItem key={c.slug}>
-                <Link href={`/category/${c.slug}`} className="related__link">
-                  <span className="related__name">{c.name}</span>
-                  <span className="related__intro">{c.intro}</span>
-                  <span className="textlink">Shop {c.name.toLowerCase()}</span>
+                <Link href={`/category/${c.slug}`} className="cat-related__link">
+                  <PhotoFrame photo={photoForCategory(c)} ratio="4 / 5" />
+                  <span className="cat-related__name">{c.name}</span>
+                  <span className="cat-related__intro">{c.bestFor}</span>
                 </Link>
               </StaggerItem>
             ))}

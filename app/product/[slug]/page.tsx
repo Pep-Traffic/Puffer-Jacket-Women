@@ -12,8 +12,10 @@ import {
   sizesFor,
 } from "@/lib/catalog";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/seo";
+import { swatchFor } from "@/lib/swatch";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PhotoFrame from "@/components/PhotoFrame";
+import ZoomFrame from "@/components/ZoomFrame";
 import AddToBag from "@/components/AddToBag";
 import ProductCard from "@/components/ProductCard";
 import JsonLd from "@/components/JsonLd";
@@ -87,20 +89,22 @@ export default async function ProductPage({ params }: { params: Params }) {
 
       <section className="container pdp" aria-label={product.name}>
         <SettleImage className="pdp__gallery">
-          <PhotoFrame
-            photo={photoForProduct(product)}
-            ratio="4 / 5"
-            priority
-            caption="Stock photo. The product photograph replaces this before launch."
-          />
+          <ZoomFrame>
+            <PhotoFrame
+              photo={photoForProduct(product)}
+              ratio="4 / 5"
+              priority
+              caption="Stock photo. The product photograph replaces this before launch."
+            />
+          </ZoomFrame>
         </SettleImage>
 
         <Reveal className="pdp__info" delay={0.1}>
-          <p className="pdp__category">
-            <Link href={`/category/${category.slug}`}>{category.name}</Link>
-          </p>
           <h1><Split>{product.name}</Split></h1>
-          <p className="pdp__colour">{product.colour}</p>
+          <p className="pdp__colour">
+            <span className="card__swatch" style={{ ["--sw" as string]: swatchFor(product.colour) }} aria-hidden="true" />
+            {product.colour}
+          </p>
           <div className="pdp__pricebox">
             <p className="pdp__price">Price to confirm</p>
             <p className="pdp__note">
@@ -140,11 +144,14 @@ export default async function ProductPage({ params }: { params: Params }) {
       </section>
 
       <section className="section section--tint" aria-labelledby="details-heading">
-        <div className="container prose-wide">
-          <Reveal>
+        <div className="container pdp-details">
+          <Reveal className="pdp-details__head">
             <h2 id="details-heading"><Split>About this piece</Split></h2>
+            <p className="muted-lede">
+              Shell, fill, fit and care for this style. Items marked to confirm are finalised before launch.
+            </p>
           </Reveal>
-          <Reveal delay={0.05}>
+          <Reveal delay={0.05} className="pdp-details__body">
             <details className="accordion" open>
               <summary>Details</summary>
               <p>
@@ -192,7 +199,7 @@ export default async function ProductPage({ params }: { params: Params }) {
       </section>
 
       {related.length > 0 ? (
-        <section className="section section--stone" aria-labelledby="related-products-heading">
+        <section className="section section--stone pdp-related" aria-labelledby="related-products-heading">
           <div className="container">
             <Reveal className="section-head">
               <h2 id="related-products-heading"><Split>More {category.name.toLowerCase()}</Split></h2>

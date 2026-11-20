@@ -4,25 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Heart, Minus, Plus, Ruler, Truck, ArrowsClockwise, Drop, Check } from "@phosphor-icons/react";
 import { useCart } from "./CartProvider";
+import { swatchFor } from "@/lib/swatch";
 
 type Props = {
   slug: string;
   name: string;
   colour: string;
   sizes: string[];
-};
-
-// Swatch colours for the colour names used in the catalogue. Only the
-// product's own colour is offered: no colours are invented.
-const SWATCH: Record<string, string> = {
-  Black: "#121212",
-  Ink: "#1d1f24",
-  Oxblood: "#5a1a24",
-  Stone: "#cfc8bd",
-  Navy: "#1f2a44",
-  Olive: "#5b5d3a",
-  Ivory: "#f1ece1",
-  Oat: "#d8c9ad",
 };
 
 export default function AddToBag({ slug, name, colour, sizes }: Props) {
@@ -73,7 +61,7 @@ export default function AddToBag({ slug, name, colour, sizes }: Props) {
             aria-checked="true"
             aria-label={colour}
             className="swatch is-on"
-            style={{ ["--sw" as string]: SWATCH[colour] ?? "#cfc8bd" }}
+            style={{ ["--sw" as string]: swatchFor(colour) }}
           />
         </div>
       </div>
