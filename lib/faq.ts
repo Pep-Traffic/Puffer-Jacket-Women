@@ -82,7 +82,7 @@ export const faqGroups: FaqGroup[] = [
     ],
   },
   {
-    title: "Shopping",
+    title: "Shopping and returns",
     items: [
       {
         q: "What is the best puffer jacket for women?",
@@ -103,6 +103,31 @@ export const faqGroups: FaqGroup[] = [
       {
         q: "Can I return a purchase?",
         a: "Return details are confirmed before launch and will be listed on this page once they are final.",
+      },
+    ],
+  },
+  {
+    title: "Orders and payment",
+    items: [
+      {
+        q: "What payment methods do you accept?",
+        a: "Payment methods are confirmed before launch and listed at checkout. Checkout uses a payment provider that is chosen before the store opens.",
+      },
+      {
+        q: "Is my payment information secure?",
+        a: "Payment details are handled by the payment provider used at checkout. That provider is confirmed before launch, and this page will name it then.",
+      },
+      {
+        q: "Will I receive an order confirmation?",
+        a: "Order confirmation details are confirmed before launch. They will be sent to the email address you give at checkout.",
+      },
+      {
+        q: "Can I change or cancel my order after placing it?",
+        a: "Order changes and cancellations are confirmed before launch. If you need to change an order, contact us as soon as possible and we will tell you what is possible.",
+      },
+      {
+        q: "How much does delivery cost?",
+        a: "Delivery options, times and fees are confirmed at checkout, before you pay.",
       },
     ],
   },
