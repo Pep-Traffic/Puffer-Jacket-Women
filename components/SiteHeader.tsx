@@ -25,6 +25,7 @@ import {
 } from "@/lib/catalog";
 import { swatchFor } from "@/lib/swatch";
 import { SAVED_EVENT, readSaved } from "@/lib/saved";
+import { localePath, t, type Locale } from "@/lib/i18n";
 import { useCart } from "./CartProvider";
 
 // One panel is open at a time, below the header row.
@@ -41,16 +42,8 @@ function isSamePanel(a: Panel, b: Panel): boolean {
   return a.kind !== "category" || a.slug === (b as { slug: string }).slug;
 }
 
-// Short service notes. Each one is true today: nothing here promises a price,
-// a shipping threshold or a payment provider that has not been chosen.
-const notes = [
-  { icon: Ruler, text: "Fit guidance on every page" },
-  { icon: Truck, text: "Shipping confirmed at checkout" },
-  { icon: ArrowsClockwise, text: "Returns policy shown before you pay" },
-  { icon: Question, text: "Questions? Read the FAQ", href: "/faq" },
-];
-
-export default function SiteHeader() {
+export default function SiteHeader({ lang = "en" }: { lang?: Locale }) {
+  const s = t(lang);
   const [panel, setPanel] = useState<Panel>(null);
   const [query, setQuery] = useState("");
   const [savedSlugs, setSavedSlugs] = useState<string[]>([]);
@@ -127,6 +120,15 @@ export default function SiteHeader() {
     .map((slug) => productBySlug(slug))
     .filter((p): p is Product => p !== undefined);
 
+  const notes = [
+    { icon: Ruler, text: s.noteFit },
+    { icon: Truck, text: s.noteShipping },
+    { icon: ArrowsClockwise, text: s.noteReturns },
+    { icon: Question, text: s.noteQuestions, href: localePath(lang, "/faq") },
+  ];
+
+  const catName = (slug: string) => s.categories[slug as keyof typeof s.categories];
+
   return (
     <>
       <div className="topbar">
@@ -149,29 +151,31 @@ export default function SiteHeader() {
         }}
       >
         <div className="container site-header__inner">
-          {/* Logo slot: the logo goes here. The space is kept until it is added. */}
-          <Link href="/" className="logo-slot" aria-label="Puffer Jacket Women, home" />
+          <Link href={localePath(lang, "/")} className="site-logo" aria-label={`${s.home}, Puffer Jacket Women`}>
+            <img src="/brand/logo.png" alt="Puffer Jacket Women logo" width={1822} height={482} />
+          </Link>
 
           <nav className="nav" aria-label="Main">
-            <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
-              Home
+            <Link href={localePath(lang, "/")} aria-current={pathname === localePath(lang, "/") ? "page" : undefined}>
+              {s.home}
             </Link>
             {categories.map((c) => {
               const isOpen = panel?.kind === "category" && panel.slug === c.slug;
+              const href = localePath(lang, `/category/${c.slug}`);
               return (
                 <div key={c.slug} className="nav-item">
                   <Link
-                    href={`/category/${c.slug}`}
-                    aria-current={pathname === `/category/${c.slug}` ? "page" : undefined}
+                    href={href}
+                    aria-current={pathname === href ? "page" : undefined}
                     onMouseEnter={() => hoverCategory(c.slug)}
                     onFocus={() => setPanel({ kind: "category", slug: c.slug })}
                   >
-                    {c.name}
+                    {catName(c.slug)}
                   </Link>
                   <button
                     type="button"
                     className="nav-item__toggle"
-                    aria-label={`Show ${c.name.toLowerCase()} styles`}
+                    aria-label={`${catName(c.slug)}`}
                     aria-expanded={isOpen}
                     aria-controls="header-panel"
                     onClick={() => toggle({ kind: "category", slug: c.slug })}
@@ -184,13 +188,13 @@ export default function SiteHeader() {
           </nav>
 
           <div className="header-actions">
-            <Link href="/shop" className="header-pill">
-              Shop all
+            <Link href={localePath(lang, "/shop")} className="header-pill">
+              {s.shopAll}
             </Link>
             <button
               type="button"
               className="icon-btn"
-              aria-label="Search"
+              aria-label={s.search}
               aria-expanded={panel?.kind === "search"}
               aria-controls="header-panel"
               onClick={() => toggle({ kind: "search" })}
@@ -200,7 +204,7 @@ export default function SiteHeader() {
             <button
               type="button"
               className="icon-btn"
-              aria-label={`Saved pieces, ${savedSlugs.length}`}
+              aria-label={`${s.saved}, ${savedSlugs.length}`}
               aria-expanded={panel?.kind === "saved"}
               aria-controls="header-panel"
               onClick={() => toggle({ kind: "saved" })}
@@ -210,7 +214,7 @@ export default function SiteHeader() {
                 {savedSlugs.length}
               </span>
             </button>
-            <Link href="/cart" className="icon-btn" aria-label={`Bag, ${count} items`}>
+            <Link href={localePath(lang, "/cart")} className="icon-btn" aria-label={`${s.bag}, ${count}`}>
               <Handbag size={22} aria-hidden="true" />
               <span className="icon-btn__badge" aria-hidden="true">
                 {count}
@@ -224,7 +228,7 @@ export default function SiteHeader() {
               onClick={() => toggle({ kind: "menu" })}
             >
               {panel?.kind === "menu" ? <X size={20} aria-hidden="true" /> : <List size={20} aria-hidden="true" />}
-              <span className="sr-only">{panel?.kind === "menu" ? "Close menu" : "Open menu"}</span>
+              <span className="sr-only">{panel?.kind === "menu" ? s.closeMenu : s.menu}</span>
             </button>
           </div>
         </div>
@@ -233,31 +237,31 @@ export default function SiteHeader() {
           <div id="header-panel" className={`header-panel header-panel--${panel.kind}`}>
             <div className="container header-panel__inner">
               {panel.kind === "menu" ? (
-                <nav className="drop-menu" aria-label="Mobile">
-                  <Link href="/">Home</Link>
+                <nav className="drop-menu" aria-label={s.menu}>
+                  <Link href={localePath(lang, "/")}>{s.home}</Link>
                   {categories.map((c) => (
-                    <Link key={c.slug} href={`/category/${c.slug}`}>
-                      {c.name}
+                    <Link key={c.slug} href={localePath(lang, `/category/${c.slug}`)}>
+                      {catName(c.slug)}
                     </Link>
                   ))}
-                  <Link href="/shop">Shop all</Link>
-                  <Link href="/guide">Guide</Link>
-                  <Link href="/faq">Questions</Link>
+                  <Link href={localePath(lang, "/shop")}>{s.shopAll}</Link>
+                  <Link href={localePath(lang, "/guide")}>{s.linkGuide}</Link>
+                  <Link href={localePath(lang, "/faq")}>{s.linkQuestions}</Link>
                 </nav>
               ) : null}
 
               {panel.kind === "category" && openCategory ? (
                 <>
                   <div className="drop-head">
-                    <h2 className="drop-title">{openCategory.name}</h2>
-                    <Link href={`/category/${openCategory.slug}`} className="textlink">
-                      Shop all {openCategory.name.toLowerCase()}
+                    <h2 className="drop-title">{catName(openCategory.slug)}</h2>
+                    <Link href={localePath(lang, `/category/${openCategory.slug}`)} className="textlink">
+                      {s.shopAll}: {catName(openCategory.slug)}
                     </Link>
                   </div>
                   <ul className="drop-grid">
                     {productsIn(openCategory.slug).map((p) => (
                       <li key={p.slug}>
-                        <Link href={`/product/${p.slug}`}>
+                        <Link href={localePath(lang, `/product/${p.slug}`)}>
                           <span className="drop-swatch" style={{ ["--sw" as string]: swatchFor(p.colour) }} aria-hidden="true" />
                           <span className="drop-name">{p.name}</span>
                           <span className="drop-meta">{p.colour}</span>
@@ -271,25 +275,25 @@ export default function SiteHeader() {
               {panel.kind === "search" ? (
                 <>
                   <label className="search-field">
-                    <span className="sr-only">Search styles, colours and categories</span>
+                    <span className="sr-only">{s.searchPlaceholder}</span>
                     <input
                       ref={searchField}
                       type="search"
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
-                      placeholder="Search styles, colours or categories"
+                      placeholder={s.searchPlaceholder}
                       autoComplete="off"
                     />
                   </label>
                   {!q ? (
-                    <p className="drop-empty">Type a style, a colour or a category to start.</p>
+                    <p className="drop-empty">{s.searchIdle}</p>
                   ) : results.length === 0 ? (
-                    <p className="drop-empty">No styles match “{query.trim()}”. Try a colour or a category.</p>
+                    <p className="drop-empty">{s.noMatch.replace("{q}", query.trim())}</p>
                   ) : (
                     <ul className="drop-grid">
                       {results.map((p) => (
                         <li key={p.slug}>
-                          <Link href={`/product/${p.slug}`}>
+                          <Link href={localePath(lang, `/product/${p.slug}`)}>
                             <span className="drop-swatch" style={{ ["--sw" as string]: swatchFor(p.colour) }} aria-hidden="true" />
                             <span className="drop-name">{p.name}</span>
                             <span className="drop-meta">
@@ -305,14 +309,12 @@ export default function SiteHeader() {
 
               {panel.kind === "saved" ? (
                 savedProducts.length === 0 ? (
-                  <p className="drop-empty">
-                    No saved pieces yet. Use the heart on a product page to keep one here.
-                  </p>
+                  <p className="drop-empty">{s.savedEmpty}</p>
                 ) : (
                   <ul className="drop-grid">
                     {savedProducts.map((p) => (
                       <li key={p.slug}>
-                        <Link href={`/product/${p.slug}`}>
+                        <Link href={localePath(lang, `/product/${p.slug}`)}>
                           <span className="drop-swatch" style={{ ["--sw" as string]: swatchFor(p.colour) }} aria-hidden="true" />
                           <span className="drop-name">{p.name}</span>
                           <span className="drop-meta">{p.colour}</span>

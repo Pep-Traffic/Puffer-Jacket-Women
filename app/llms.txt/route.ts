@@ -26,6 +26,7 @@ export function GET() {
   lines.push("- Prices and ratings: not yet published. Shipping and returns are confirmed before checkout.");
   lines.push("- Fit and fill guidance: the buying guide and size guide explain how to choose and measure.");
   lines.push("- Imagery: stock photographs until product photography is added.");
+  lines.push(`- Logo: ${absoluteUrl("/brand/logo.png")} (Puffer Jacket Women wordmark with a mountain and snowflake emblem).`);
   lines.push("");
 
   lines.push("## Categories");

@@ -11,6 +11,8 @@ export function organizationSchema() {
     name: site.name,
     url: site.url,
     description: site.description,
+    logo: absoluteUrl("/brand/logo.png"),
+    image: absoluteUrl("/brand/logo.png"),
   };
 }
 

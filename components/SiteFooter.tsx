@@ -1,70 +1,96 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Handbag, Question, Ruler, BookOpenText } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowsClockwise,
+  Clock,
+  EnvelopeSimple,
+  Headset,
+  LockSimple,
+  MapPin,
+  Package,
+  PhoneCall,
+} from "@phosphor-icons/react/dist/ssr";
 import { categories } from "@/lib/catalog";
 import { site } from "@/lib/site";
+import { localePath, t, type Locale } from "@/lib/i18n";
 import FooterMark from "./FooterMark";
-import BackToTop from "./BackToTop";
+import NewsletterForm from "./NewsletterForm";
+import BrandMark from "./BrandMark";
+import LocaleSelects from "./LocaleSelects";
 
-const services = [
-  { href: "/size-guide", title: "Size guide", body: "Measure once and compare before you order.", icon: Ruler },
-  { href: "/guide", title: "Buying guide", body: "Warmth, fill, fit and layering, explained.", icon: BookOpenText },
-  { href: "/faq", title: "Questions", body: "Short answers to what shoppers ask first.", icon: Question },
-  { href: "/cart", title: "Your bag", body: "Review your pieces before checkout.", icon: Handbag },
-];
+// Official brand marks, each in its brand colour.
+const socials = [
+  { key: "instagram", label: "Instagram", mark: "instagram" },
+  { key: "facebook", label: "Facebook", mark: "facebook" },
+  { key: "youtube", label: "YouTube", mark: "youtube" },
+  { key: "pinterest", label: "Pinterest", mark: "pinterest" },
+] as const;
 
-const columns = [
-  {
-    title: "Shop",
-    links: [...categories.map((c) => ({ href: `/category/${c.slug}`, label: c.name })), { href: "/shop", label: "All products" }],
-  },
-  {
-    title: "Guides",
-    links: [
-      { href: "/guide", label: "Buying guide" },
-      { href: "/size-guide", label: "Size guide" },
-      { href: "/faq", label: "Questions" },
-    ],
-  },
-  {
-    title: "Store",
-    links: [
-      { href: "/", label: "Home" },
-      { href: "/cart", label: "Bag" },
-      { href: "/checkout", label: "Checkout" },
-    ],
-  },
-];
+// Payment marks. Show only the methods the store actually accepts.
+const paymentMarks = ["visa", "mastercard", "paypal", "applepay"] as const;
 
-export default function SiteFooter() {
+export default function SiteFooter({ lang = "en" }: { lang?: Locale }) {
+  const s = t(lang);
   const year = new Date().getFullYear();
+  const L = (path: string) => localePath(lang, path);
+
+  const features = [
+    { icon: LockSimple, title: s.featCheckoutTitle, body: s.featCheckoutBody },
+    { icon: ArrowsClockwise, title: s.featReturnsTitle, body: s.featReturnsBody },
+    { icon: Package, title: s.featShipTitle, body: s.featShipBody },
+    { icon: Headset, title: s.featFitTitle, body: s.featFitBody },
+  ];
+
+  const columns = [
+    {
+      title: s.colShop,
+      links: [
+        { href: L("/shop"), label: s.linkAll },
+        ...categories.map((c) => ({
+          href: L(`/category/${c.slug}`),
+          label: s.categories[c.slug as keyof typeof s.categories],
+        })),
+      ],
+    },
+    {
+      title: s.colCare,
+      links: [
+        { href: `mailto:${site.contactEmail}`, label: s.linkContact },
+        { href: L("/faq"), label: s.linkQuestions },
+        { href: L("/size-guide"), label: s.linkSize },
+        { href: L("/cart"), label: s.linkBag },
+      ],
+    },
+    {
+      title: s.colInfo,
+      links: [
+        { href: L("/guide"), label: s.linkGuide },
+        { href: L("/checkout"), label: s.linkCheckout },
+        { href: L("/"), label: s.home },
+      ],
+    },
+  ];
+
   return (
     <footer className="ft">
       <div className="container">
-        <ul className="ft__services">
-          {services.map(({ href, title, body, icon: Icon }) => (
-            <li key={href}>
-              <Link href={href} className="ft__service">
-                <Icon size={26} aria-hidden="true" />
-                <span className="ft__service-title">{title}</span>
-                <span className="ft__service-body">{body}</span>
-                <ArrowUpRight size={18} className="ft__service-arrow" aria-hidden="true" />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <section className="ft-join" aria-labelledby="join-heading">
+          <div className="ft-join__brand">
+            <img src="/brand/logo.png" alt="Puffer Jacket Women logo" width={1822} height={482} loading="lazy" />
+          </div>
+          <div className="ft-join__copy">
+            <h2 id="join-heading">{s.joinHeading}</h2>
+            <p>{s.joinBody}</p>
+          </div>
+          <NewsletterForm lang={lang} />
+        </section>
 
         <div className="ft__main">
-          <div className="ft__brand">
-            <Link href="/" className="ft__logo" aria-label={`${site.name}, home`}>
-              <strong>Puffer Jacket</strong> Women
-            </Link>
-            <p>
+          <div className="ft__col ft__brand">
+            <p className="ft__brand-name">{site.name}</p>
+            <p className="ft__brand-body">
               Women&apos;s puffer jackets, vests, short sleeve layers, caps, hats and accessories, with fit and fill
               explained on every page.
             </p>
-            <Link href="/shop" className="ft__cta">
-              Shop the collection <ArrowRight size={16} aria-hidden="true" />
-            </Link>
           </div>
 
           {columns.map((col) => (
@@ -73,10 +99,11 @@ export default function SiteFooter() {
               <ul>
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href}>
-                      <span>{l.label}</span>
-                      <ArrowRight size={14} aria-hidden="true" />
-                    </Link>
+                    {l.href.startsWith("mailto:") ? (
+                      <a href={l.href}>{l.label}</a>
+                    ) : (
+                      <Link href={l.href}>{l.label}</Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -84,15 +111,74 @@ export default function SiteFooter() {
           ))}
         </div>
 
-        <FooterMark />
+        <ul className="ft__features">
+          {features.map(({ icon: Icon, title, body }) => (
+            <li key={title}>
+              <Icon size={30} aria-hidden="true" />
+              <span>
+                <span className="ft__feature-title">{title}</span>
+                <span className="ft__feature-body">{body}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="ft__contact" aria-label="Contact">
+          <p>
+            <EnvelopeSimple size={18} aria-hidden="true" />
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+          </p>
+          <p>
+            <PhoneCall size={18} aria-hidden="true" />
+            <span>{s.contactPhone}</span>
+          </p>
+          <p>
+            <Clock size={18} aria-hidden="true" />
+            <span>{s.contactHours}</span>
+          </p>
+          <p>
+            <MapPin size={18} aria-hidden="true" />
+            <span>{s.contactAddress}</span>
+          </p>
+        </div>
 
         <div className="ft__bar">
-          <span>
-            © {year} {site.name}. All rights reserved.
-          </span>
-          <span>Photography by Burst by Shopify. Products and prices are placeholders until launch.</span>
-          <BackToTop />
+          <p className="ft__copy">{s.copyright.replace("{year}", String(year)).replace("{name}", site.name)}</p>
+
+          <div className="ft__payments">
+            <span className="ft__payments-label">{s.paymentsLabel}</span>
+            <ul aria-hidden="true">
+              {paymentMarks.map((mark) => (
+                <li key={mark}>
+                  <BrandMark name={mark} size={30} />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <ul className="ft__socials" aria-label={s.socialsLabel}>
+            {socials.map(({ key, label, mark }) => {
+              const url: string = site.socials[key];
+              return (
+                <li key={key}>
+                  {url ? (
+                    <a href={url} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                      <BrandMark name={mark} size={22} />
+                    </a>
+                  ) : (
+                    <span aria-hidden="true" title={`${label} link added before launch`}>
+                      <BrandMark name={mark} size={22} />
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+
+          <LocaleSelects lang={lang} />
         </div>
+
+        <FooterMark />
       </div>
     </footer>
   );

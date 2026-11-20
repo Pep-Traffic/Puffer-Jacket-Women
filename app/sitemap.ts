@@ -1,31 +1,36 @@
 import type { MetadataRoute } from "next";
 import { categories, products } from "@/lib/catalog";
 import { absoluteUrl } from "@/lib/site";
+import { locales, localePath, translatedLocales, type Locale } from "@/lib/i18n";
 
 export const dynamic = "force-static";
 
+// Every public page is listed in each language it exists in, with links to its
+// other language versions. The bag and checkout are not listed.
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = ["/", "/shop", "/guide", "/size-guide", "/faq"];
-  const lastModified = new Date();
-
-  return [
-    ...staticPages.map((path) => ({
-      url: absoluteUrl(path),
-      lastModified,
-      changeFrequency: "weekly" as const,
-      priority: path === "/" ? 1 : 0.7,
-    })),
-    ...categories.map((c) => ({
-      url: absoluteUrl(`/category/${c.slug}`),
-      lastModified,
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    })),
-    ...products.map((p) => ({
-      url: absoluteUrl(`/product/${p.slug}`),
-      lastModified,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
+  const paths = [
+    ...staticPages,
+    ...categories.map((c) => `/category/${c.slug}`),
+    ...products.map((p) => `/product/${p.slug}`),
   ];
+  const lastModified = new Date();
+  const entries: MetadataRoute.Sitemap = [];
+
+  for (const path of paths) {
+    const priority = path === "/" ? 1 : path.startsWith("/product/") ? 0.8 : path.startsWith("/category/") ? 0.9 : 0.7;
+    const languages: Record<string, string> = {};
+    for (const l of locales) languages[l] = absoluteUrl(localePath(l, path));
+    for (const lang of ["en", ...translatedLocales] as Locale[]) {
+      entries.push({
+        url: absoluteUrl(localePath(lang, path)),
+        lastModified,
+        changeFrequency: "weekly",
+        priority,
+        alternates: { languages },
+      });
+    }
+  }
+
+  return entries;
 }
