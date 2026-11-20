@@ -83,7 +83,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
       <section className="section" aria-labelledby="about-heading">
         <div className="container prose-wide">
           <Reveal>
-            <h2 id="about-heading"><Split>About {cat.name.toLowerCase()}</Split></h2>
+            <h2 id="about-heading"><Split>About {cat.name.toLowerCase()} for women</Split></h2>
           </Reveal>
           {cat.paragraphs.map((p, i) => (
             <Reveal key={i} delay={0.05 * i}>

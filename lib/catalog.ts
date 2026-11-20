@@ -41,7 +41,7 @@ export const categories: Category[] = [
     name: "Long sleeve",
     title: "Long sleeve puffer jackets for women",
     intro:
-      "Full-length sleeves for cold days and layering. Choose a hooded, cropped, belted, long or packable style.",
+      "Women's long sleeve puffer jackets for cold days and layering. Choose a hooded, cropped, belted, long or packable style.",
     paragraphs: [
       "A long sleeve puffer is the everyday answer to cold weather. The sleeves cover the wrists, and stitched channels hold the insulation in place, so the warmth stays where it belongs.",
       "Styles vary more than the name suggests. A hooded jacket helps in wind and drizzle, a cropped cut sits above the waist for a balanced line with high-waisted trousers, and a longer coat covers the hips on the coldest days.",
@@ -111,7 +111,7 @@ export const categories: Category[] = [
     name: "Sleeveless",
     title: "Sleeveless puffer vests for women",
     intro:
-      "Puffer vests that layer over knitwear, shirts and jackets without adding bulk at the arms.",
+      "Puffer vests for women that layer over knitwear, shirts and jackets without adding bulk at the arms.",
     paragraphs: [
       "A sleeveless puffer keeps the core warm while your arms stay free. It is the simplest way to add warmth under a coat, over a shirt, or on top of a knit.",
       "Vests suit a layered wardrobe. Choose a classic quilted vest for a clean line, a hooded vest for wind, or a cropped vest that sits over high-waisted bottoms.",
@@ -175,7 +175,7 @@ export const categories: Category[] = [
     name: "Short sleeve",
     title: "Short sleeve layers for women",
     intro:
-      "Short-sleeve quilted layers for mild days, indoor warmth and layering under a coat.",
+      "Short sleeve quilted layers for women on mild days, indoors and under a coat.",
     paragraphs: [
       "A short sleeve layer works where a full puffer would be too much. It is light, easy to carry, and sits neatly under a jacket or a coat.",
       "These pieces suit changing weather: a cool morning that turns warm, or a heated room where you still want some cover. Choose a close fit to layer under outerwear, and a relaxed fit to wear on its own.",
@@ -239,7 +239,7 @@ export const categories: Category[] = [
     name: "Caps and hats",
     title: "Caps, beanies and hats for women",
     intro:
-      "Knit beanies, quilted caps and bucket hats that finish the outfit and keep your head warm.",
+      "Knit beanies, quilted caps and bucket hats for women that finish a puffer outfit and keep your head warm.",
     paragraphs: [
       "Your head loses warmth quickly, so a beanie or cap makes a real difference on a cold walk. These pieces are small, but they finish the look and do practical work.",
       "Knit beanies are the warmest option for cold days, and pair well with any puffer. Quilted caps match the puffer collection and keep the wind off your face. Bucket hats add cover in drizzle and suit a relaxed outfit.",
@@ -303,7 +303,7 @@ export const categories: Category[] = [
     name: "Accessories",
     title: "Winter accessories for women",
     intro:
-      "Scarves, gloves and bags that match the puffer collection and complete the outfit.",
+      "Scarves, gloves and bags for women that match the puffer collection and complete the outfit.",
     paragraphs: [
       "Accessories finish a winter outfit and add warmth at the neck and hands. A scarf, a pair of gloves and a practical bag make the collection work day to day.",
       "A thick knit scarf adds weight and warmth in cold weather. A printed silk scarf adds colour to a plain puffer. Gloves with touchscreen-friendly fingertips let you use a phone without taking them off.",

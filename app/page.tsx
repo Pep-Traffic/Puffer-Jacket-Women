@@ -35,9 +35,9 @@ import { FaqList } from "@/components/FaqList";
 import { DrawLine, Reveal, SettleImage, Stagger, StaggerItem } from "@/components/Motion";
 
 export const metadata: Metadata = {
-  title: { absolute: "Puffer Jackets for Women | Puffer Jacket Women" },
+  title: { absolute: "Puffer Jacket Women: Warm Puffer Jackets, Vests and Layers" },
   description:
-    "Shop women's puffer jackets, sleeveless puffer vests, short-sleeve layers, caps, hats and accessories. Fit, fill, materials and layering guidance on every page.",
+    "Puffer Jacket Women: warm puffer jackets, sleeveless puffer vests, short sleeve layers, caps and hats for women. Fill, fit and fabric explained on every page.",
   alternates: { canonical: "/" },
 };
 
@@ -188,7 +188,7 @@ export default function HomePage() {
             <strong>Puffer jackets</strong> for women, <span className="hero__accent">built for the cold.</span>
           </h1>
           <p className="hero__lede">
-            Long sleeve, sleeveless, short sleeve, caps and accessories, with fit and fill explained on every page.
+            Puffer jackets for women in long sleeve, sleeveless and short sleeve styles, plus caps, hats and accessories, with fit and fill explained on every page.
           </p>
           <div className="hero__actions">
             <Link href="/shop" className="btn">
@@ -231,9 +231,9 @@ export default function HomePage() {
       <section className="section" aria-labelledby="categories-heading">
         <div className="container">
           <Reveal className="section-intro">
-            <h2 id="categories-heading"><Split>Shop by category</Split></h2>
+            <h2 id="categories-heading"><Split>Shop puffer jackets for women</Split></h2>
             <p>
-              Five categories in one wardrobe. Start with the piece you need most, then add the layers around it.
+              Five categories of puffer jackets for women and layers. Start with the piece you need most, then add the layers around it.
             </p>
           </Reveal>
           <ul className="cats">
@@ -263,7 +263,7 @@ export default function HomePage() {
       <section className="section section--tint" aria-labelledby="usecases-heading">
         <div className="container">
           <Reveal className="section-intro">
-            <h2 id="usecases-heading"><Split>Dress for the day ahead</Split></h2>
+            <h2 id="usecases-heading"><Split>Choose a puffer jacket for the day ahead</Split></h2>
             <p>
               Start with what the day will bring. Each case below points to the pieces and the guide sections that
               fit it best.
@@ -277,9 +277,9 @@ export default function HomePage() {
         <div className="container">
           <DetailZoom photo={photos.heroYellowPuffer} details={details}>
             <h2 id="detail-heading">
-              <Split>Look closely at a puffer jacket</Split>
+              <Split>Look closely at a puffer jacket for women</Split>
             </h2>
-            <p className="muted-lede">Four details that tell you how a puffer will wear. Check them on any jacket.</p>
+            <p className="muted-lede">Four details that show how a women's puffer jacket will wear. Check them on any jacket before you buy.</p>
           </DetailZoom>
         </div>
       </section>
@@ -287,8 +287,8 @@ export default function HomePage() {
       <section className="section section--stone" aria-labelledby="layers-heading">
         <div className="container">
           <Reveal className="section-intro">
-            <h2 id="layers-heading"><Split>Layer for the weather</Split></h2>
-            <p>Three layers do most of the work. Start from the base and build up.</p>
+            <h2 id="layers-heading"><Split>Layer a puffer jacket for the weather</Split></h2>
+            <p>Three layers do most of the work with a puffer jacket for women. Start from the base and build up.</p>
           </Reveal>
           <LayerStory layers={layers} />
         </div>
@@ -297,9 +297,9 @@ export default function HomePage() {
       <section className="section" aria-labelledby="materials-heading">
         <div className="container">
           <Reveal className="section-intro">
-            <h2 id="materials-heading"><Split>What shell fabrics are made of</Split></h2>
+            <h2 id="materials-heading"><Split>What puffer jacket shells are made of</Split></h2>
             <p>
-              The shell is the first thing wind and rain meet. These are the fabrics you will see most often, and what
+              The shell is the first thing wind and rain meet on a puffer jacket for women. These are the fabrics you will see most often, and what
               each one does well.
             </p>
           </Reveal>
@@ -329,7 +329,7 @@ export default function HomePage() {
       <section className="section" aria-labelledby="featured-heading">
         <div className="container">
           <Reveal className="section-head">
-            <h2 id="featured-heading"><Split>Featured pieces</Split></h2>
+            <h2 id="featured-heading"><Split>Featured puffer jackets for women</Split></h2>
             <Link href="/shop" className="textlink">
               Shop all products
             </Link>
@@ -349,9 +349,9 @@ export default function HomePage() {
         <div className="container">
           <div className="warm">
             <Reveal className="warm__text">
-              <h2 id="warmth-heading"><Split>What warmth really depends on</Split></h2>
+              <h2 id="warmth-heading"><Split>What warmth in a puffer jacket depends on</Split></h2>
             <p>
-              Insulation works by trapping still air. The more air a fill holds for its weight, the warmer a jacket
+              A puffer jacket works by trapping still air. The more air a fill holds for its weight, the warmer a jacket
               feels at a given weight.
             </p>
             <p>
@@ -390,8 +390,8 @@ export default function HomePage() {
         <div className="container">
           <Glossary items={glossary}>
             <Reveal>
-              <h2 id="glossary-heading"><Split>Words you will see on a label</Split></h2>
-              <p className="muted-lede">Short definitions of the terms used on product pages and in the buying guide.</p>
+              <h2 id="glossary-heading"><Split>Puffer jacket words you will see on a label</Split></h2>
+              <p className="muted-lede">Short definitions of the puffer jacket terms used on product pages and in the buying guide for women.</p>
             </Reveal>
           </Glossary>
         </div>
@@ -400,7 +400,7 @@ export default function HomePage() {
       <section className="section section--stone" aria-labelledby="steps-heading">
         <div className="container">
           <Reveal className="section-intro">
-            <h2 id="steps-heading"><Split>Three decisions before you buy</Split></h2>
+            <h2 id="steps-heading"><Split>Three decisions before you buy a puffer jacket</Split></h2>
           </Reveal>
           <div className="steps">
             <DrawLine className="steps__line" />
@@ -422,7 +422,7 @@ export default function HomePage() {
       <section className="section" aria-labelledby="care-heading">
         <div className="container two-col">
           <Reveal className="panel">
-            <h2 id="care-heading"><Split>Care that keeps the loft</Split></h2>
+            <h2 id="care-heading"><Split>Care that keeps a puffer jacket warm</Split></h2>
             <ul className="checks">
               {careItems.map((item) => (
                 <li key={item}>
@@ -433,7 +433,7 @@ export default function HomePage() {
             </ul>
           </Reveal>
           <Reveal delay={0.12} className="panel panel--ink">
-            <h2 id="sizing-heading"><Split>Size in three measurements</Split></h2>
+            <h2 id="sizing-heading"><Split>Size a puffer jacket in three measurements</Split></h2>
             <ul className="checks">
               {sizingItems.map((item) => (
                 <li key={item}>
@@ -452,7 +452,7 @@ export default function HomePage() {
       <section className="section section--tint" aria-labelledby="questions-heading">
         <div className="container faq-layout">
           <Reveal>
-            <h2 id="questions-heading"><Split>Questions about puffer jackets</Split></h2>
+            <h2 id="questions-heading"><Split>Questions about puffer jackets for women</Split></h2>
             <p className="muted-lede">Short answers to the questions shoppers ask first.</p>
             <Link href="/faq" className="textlink">
               All questions
@@ -468,7 +468,7 @@ export default function HomePage() {
       <section className="section" aria-labelledby="guide-heading">
         <div className="container">
           <Reveal className="section-head">
-            <h2 id="guide-heading"><Split>The buying guide</Split></h2>
+            <h2 id="guide-heading"><Split>The puffer jacket buying guide</Split></h2>
             <Link href="/guide" className="textlink">
               Read the full guide
             </Link>
@@ -490,7 +490,7 @@ export default function HomePage() {
       <section className="section section--stone" aria-labelledby="fit-heading">
         <div className="container fit">
           <Reveal className="fit__intro">
-            <h2 id="fit-heading"><Split>Get a fit recommendation</Split></h2>
+            <h2 id="fit-heading"><Split>Get a puffer jacket fit recommendation</Split></h2>
             <p>
               Tell us your height, usual size and the weather you dress for. We reply with the cut and fill that suit
               you.
@@ -515,7 +515,7 @@ export default function HomePage() {
       <section className="closing closing--ink" aria-labelledby="closing-heading">
         <div className="container closing__grid">
           <Reveal>
-            <h2 id="closing-heading"><Split>Find the layer for tomorrow&apos;s weather</Split></h2>
+            <h2 id="closing-heading"><Split>Find your puffer jacket for tomorrow&apos;s weather</Split></h2>
             <p>Every category in one store. Start with a puffer, then add the vest, the cap or the scarf.</p>
             <div className="closing__actions">
               <Link href="/shop" className="btn">

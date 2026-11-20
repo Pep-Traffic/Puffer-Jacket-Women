@@ -12,9 +12,9 @@ import { FaqList } from "@/components/FaqList";
 import { Reveal, Stagger, StaggerItem } from "@/components/Motion";
 
 export const metadata: Metadata = {
-  title: "All products",
+  title: "All puffer jackets for women",
   description:
-    "Every product in the Puffer Jacket Women store: long-sleeve and sleeveless puffers, short-sleeve layers, caps, hats and accessories, grouped by category with a comparison.",
+    "Shop every puffer jacket for women: long sleeve and sleeveless puffers, short sleeve layers, caps, hats and accessories, with a short guide to each category.",
   alternates: { canonical: "/shop" },
 };
 
@@ -34,9 +34,9 @@ export default function ShopPage() {
 
       <section className="container intro" aria-labelledby="shop-heading">
         <Reveal>
-          <h1 id="shop-heading"><Split>All products</Split></h1>
+          <h1 id="shop-heading"><Split>All puffer jackets for women</Split></h1>
           <p className="hero__lede">
-            Every category in one place: long sleeve, sleeveless, short sleeve, caps and hats, and accessories.
+            Every puffer jacket for women in one place: long sleeve, sleeveless, short sleeve, caps and hats, and accessories.
             Each group starts with a short guide to choosing that category.
           </p>
           <nav aria-label="Jump to category" className="jump">
@@ -52,7 +52,7 @@ export default function ShopPage() {
       <section className="section section--tint" aria-labelledby="compare-heading">
         <div className="container">
           <Reveal className="section-intro">
-            <h2 id="compare-heading"><Split>Compare the categories</Split></h2>
+            <h2 id="compare-heading"><Split>Compare puffer jackets for women by category</Split></h2>
             <p>
               Each category does a different job. Use this table to find the right starting point, then open the
               category for styling ideas and a fit checklist.
@@ -99,7 +99,7 @@ export default function ShopPage() {
       <section className="section" aria-labelledby="shop-questions-heading">
         <div className="container faq-layout">
           <Reveal>
-            <h2 id="shop-questions-heading"><Split>Before you choose</Split></h2>
+            <h2 id="shop-questions-heading"><Split>Before you choose a puffer jacket</Split></h2>
             <p className="muted-lede">The questions that come up most often when shoppers compare styles.</p>
           </Reveal>
           <Reveal delay={0.1}>

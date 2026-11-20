@@ -9,9 +9,9 @@ import { FaqGroups } from "@/components/FaqList";
 import { Reveal } from "@/components/Motion";
 
 export const metadata: Metadata = {
-  title: "Puffer jacket questions",
+  title: "Puffer jacket questions for women",
   description:
-    "Answers to common questions about puffer jackets: fill and warmth, fit and layering, care, caps and hats, accessories and shopping.",
+    "Answers to common questions about puffer jackets for women: fill and warmth, fit and layering, care, caps and hats, accessories and shopping.",
   alternates: { canonical: "/faq" },
 };
 
@@ -29,7 +29,7 @@ export default function FaqPage() {
 
       <section className="container intro" aria-labelledby="faq-heading">
         <Reveal>
-          <h1 id="faq-heading"><Split>Questions about puffer jackets</Split></h1>
+          <h1 id="faq-heading"><Split>Questions about puffer jackets for women</Split></h1>
           <p className="hero__lede">
             Short answers to the questions shoppers ask most about puffer jackets, vests, layers, caps and sizing.
             For the reasoning behind them, read the <Link href="/guide" className="textlink">buying guide</Link>.

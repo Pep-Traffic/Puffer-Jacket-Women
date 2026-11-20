@@ -10,9 +10,9 @@ import ReadingProgress from "@/components/ReadingProgress";
 import { Reveal } from "@/components/Motion";
 
 export const metadata: Metadata = {
-  title: "How to choose a puffer jacket",
+  title: "How to choose a puffer jacket for women",
   description:
-    "How to choose a women's puffer jacket: weather, fill and fill power, shell fabric, sleeve length, fit, layering with vests and caps, care and common mistakes.",
+    "How to choose a puffer jacket for women: weather, fill and fill power, shell fabric, sleeve length, fit, layering with vests and caps, care and common mistakes.",
   alternates: { canonical: "/guide" },
 };
 
@@ -78,9 +78,9 @@ export default function GuidePage() {
 
         <article className="guide">
           <Reveal>
-            <h1><Split>How to choose a puffer jacket</Split></h1>
+            <h1><Split>How to choose a puffer jacket for women</Split></h1>
             <p className="hero__lede">
-              A practical guide to warmth, fill, fit and layering, for puffers, vests, short sleeve layers, caps and
+              A practical guide to warmth, fill, fit and layering, for women's puffer jackets, vests, short sleeve layers, caps and
               accessories.
             </p>
           </Reveal>

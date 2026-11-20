@@ -9,7 +9,7 @@ import { FaqList } from "@/components/FaqList";
 import { Reveal, Stagger, StaggerItem } from "@/components/Motion";
 
 export const metadata: Metadata = {
-  title: "Size guide",
+  title: "Puffer jacket size guide for women",
   description:
     "How to measure for a women's puffer jacket, vest or layer: bust, waist, hips and sleeve length, fit notes for each category, advice for sizes between two numbers, and a size chart.",
   alternates: { canonical: "/size-guide" },
@@ -57,9 +57,9 @@ export default function SizeGuidePage() {
 
       <section className="container intro" aria-labelledby="size-heading">
         <Reveal>
-          <h1 id="size-heading"><Split>Size guide</Split></h1>
+          <h1 id="size-heading"><Split>Puffer jacket size guide for women</Split></h1>
           <p className="hero__lede">
-            Measure over light clothing. Keep the tape level and snug without pulling it tight, then compare your
+            Find your size in a puffer jacket for women by measuring over light clothing. Keep the tape level and snug without pulling it tight, then compare your
             measurements with the chart.
           </p>
         </Reveal>

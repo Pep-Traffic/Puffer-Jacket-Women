@@ -20,6 +20,14 @@ export function GET() {
   );
   lines.push("");
 
+  lines.push("## Key facts");
+  lines.push(`- Subject: women's puffer jackets, sleeveless puffer vests, short sleeve layers, caps, hats and accessories.`);
+  lines.push("- Sizes: apparel XS to XL; accessories are one size, as stated on each product page.");
+  lines.push("- Prices and ratings: not yet published. Shipping and returns are confirmed before checkout.");
+  lines.push("- Fit and fill guidance: the buying guide and size guide explain how to choose and measure.");
+  lines.push("- Imagery: stock photographs until product photography is added.");
+  lines.push("");
+
   lines.push("## Categories");
   for (const c of categories) {
     lines.push(

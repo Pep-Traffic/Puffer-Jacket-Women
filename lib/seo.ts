@@ -10,6 +10,7 @@ export function organizationSchema() {
     "@type": "Organization",
     name: site.name,
     url: site.url,
+    description: site.description,
   };
 }
 
@@ -19,6 +20,7 @@ export function websiteSchema() {
     "@type": "WebSite",
     name: site.name,
     url: site.url,
+    description: site.description,
     inLanguage: "en-US",
   };
 }

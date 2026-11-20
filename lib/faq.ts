@@ -85,6 +85,18 @@ export const faqGroups: FaqGroup[] = [
     title: "Shopping",
     items: [
       {
+        q: "What is the best puffer jacket for women?",
+        a: "The best puffer jacket for women depends on the weather, the fit and how you layer. For the coldest days choose a long, well-filled jacket. For layering choose a sleeveless vest or a short sleeve layer. The buying guide explains each choice step by step.",
+      },
+      {
+        q: "How should a women's puffer jacket fit?",
+        a: "It should close without pulling across the chest, and the sleeves should reach your wrist with your arms down. Try it over the knit you will wear most, then check the size guide for the measurements that matter.",
+      },
+      {
+        q: "Can you wear a puffer jacket with a dress?",
+        a: "Yes. A long coat-length puffer works over a dress with tights and boots. A cropped puffer suits a dress with a high waist. Keep the dress simple so the jacket is the feature.",
+      },
+      {
         q: "How do I know a jacket will fit?",
         a: "Use the size guide, check the fit notes for the category, and compare your measurements with a jacket you already wear and like.",
       },

@@ -36,12 +36,12 @@ export async function generateMetadata({
   if (!product) return {};
   const path = `/product/${product.slug}`;
   return {
-    title: product.name,
-    description: product.summary,
+    title: `${product.name} for women`,
+    description: `${product.name} for women in ${product.colour.toLowerCase()}. ${product.summary}`,
     alternates: { canonical: path },
     openGraph: {
-      title: product.name,
-      description: product.summary,
+      title: `${product.name} for women`,
+      description: `${product.name} for women in ${product.colour.toLowerCase()}. ${product.summary}`,
       url: path,
     },
   };
@@ -148,7 +148,7 @@ export default async function ProductPage({ params }: { params: Params }) {
             <details className="accordion" open>
               <summary>Details</summary>
               <p>
-                {product.summary} Shell, fill and closure are confirmed before launch. This style sits in the{" "}
+                {product.summary} Shell, fill and closure are confirmed before launch. This women's style sits in the{" "}
                 {category.name.toLowerCase()} range, so you can compare it with the rest of the collection.
               </p>
             </details>
