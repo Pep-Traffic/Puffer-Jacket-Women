@@ -1,15 +1,17 @@
-/* Design tokens. Restrained palette: ink on white, one oxblood accent. */
+/* Design tokens. Olive and ivory palette: deep charcoal text on white, olive
+   for primary actions and labels, sage and ivory for secondary surfaces. */
 :root {
   color-scheme: light;
-  --ink: #121212;
-  --paper: #ffffff;
-  --stone: #f3f3f1;
-  --tint: #f3f3f1;
-  --hairline: #dcdcd8;
-  --muted: #5f5b56;
-  --accent: #8a5a2b;
-  --accent-deep: #6b4420;
-  --accent-soft: #c8995f;
+  --ink: #20231f;          /* Deep Charcoal: headings, text, footer */
+  --paper: #ffffff;        /* Pure White: main background, product cards */
+  --ivory: #f7f6f0;        /* Warm Ivory: header */
+  --stone: #dde1d3;        /* Soft Sage: secondary backgrounds */
+  --tint: #f7f6f0;         /* Warm Ivory: alternate sections, detail rows */
+  --hairline: #e8e5dc;     /* Warm Stone: borders and dividers */
+  --muted: #5c6154;        /* Deep Charcoal, lightened for secondary text */
+  --accent: #59633b;       /* Olive Green: primary brand colour */
+  --accent-deep: #434b2b;  /* Olive, darkened for hover and emphasis */
+  --accent-soft: #b7c096;  /* Olive, lightened for dark panels */
   --display: var(--font-ui), system-ui, sans-serif;
   --ui: var(--font-ui), system-ui, -apple-system, "Segoe UI", sans-serif;
   --gutter: clamp(20px, 4vw, 48px);
@@ -244,7 +246,7 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: var(--paper);
+  background: var(--ivory);
   border-bottom: 1px solid var(--hairline);
 }
 
@@ -4981,21 +4983,6 @@ h2 strong {
 }
 
 /* Product page: pointer zoom, colour line, details layout, related grid */
-.pdp__gallery .photo__box {
-  cursor: zoom-in;
-}
-
-.zoom {
-  position: relative;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .zoom:hover .photo__box img {
-    transform: scale(1.6);
-    transform-origin: var(--zx, 50%) var(--zy, 50%);
-  }
-}
-
 .pdp__colour {
   display: flex;
   align-items: center;
@@ -5127,7 +5114,334 @@ h2 strong {
     transition: none;
   }
 
-  .zoom:hover .photo__box img {
-    transform: none;
+}
+
+/* ==========================================================================
+   Product page: reference layout. Gallery on the left, buy box on the right,
+   accordions under the buy box. Colours come from the palette tokens above.
+   ========================================================================== */
+
+.pdp {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 4vw, 64px);
+  padding-block: 16px clamp(64px, 8vw, 104px);
+}
+
+.pdp__gallery {
+  min-width: 0;
+}
+
+/* Gallery: thumbnail column, main photo, expand button and stock chip */
+.pdp-gallery {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.pdp-gallery__thumbs {
+  display: grid;
+  gap: 10px;
+}
+
+.pdp-gallery__thumb {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--stone);
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease);
+}
+
+.pdp-gallery__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-gallery__thumb:hover {
+  border-color: var(--hairline);
+}
+
+.pdp-gallery__thumb[aria-pressed="true"] {
+  border-color: var(--accent);
+}
+
+.pdp-gallery__main {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--stone);
+}
+
+.pdp-gallery__main > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-gallery__chip {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 1;
+  padding: 6px 9px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ink);
+  font: 600 10px/1 var(--ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pdp-gallery__expand {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 8px 20px rgba(32, 35, 31, 0.14);
+  cursor: pointer;
+}
+
+/* Full-screen view of the current photo */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 72px 24px 24px;
+  background: rgba(32, 35, 31, 0.94);
+}
+
+.lightbox__img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100svh - 96px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Feature strip under the gallery */
+.pdp__features {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 14px 0 0;
+  padding: 22px 14px;
+  list-style: none;
+  background: var(--tint);
+  border-radius: 8px;
+}
+
+.pdp__features li {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  font: 700 var(--fs-small) / 1.3 var(--ui);
+}
+
+.pdp__features svg {
+  color: var(--ink);
+}
+
+/* Buy box column stays in flow, so the accordions are not pinned */
+.pdp .pdp__info {
+  position: static;
+}
+
+.pdp__badge {
+  display: inline-flex;
+  margin: 0;
+  padding: 8px 12px;
+  background: var(--accent);
+  color: var(--paper);
+  font: 700 12px/1 var(--ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.pdp .pdp__title {
+  margin-top: 18px;
+  font-family: var(--ui);
+  font-size: var(--fs-product);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.pdp__pricebox {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-top: 26px;
+  padding: 20px 22px;
+  background: var(--stone);
+  border-radius: 8px;
+}
+
+.pdp__pricebox > svg {
+  margin-top: 2px;
+  color: var(--accent-deep);
+}
+
+.pdp__pricebox .pdp__price {
+  margin: 0;
+  font: 700 var(--fs-lede) / 1.3 var(--ui);
+  color: var(--accent-deep);
+}
+
+.pdp__pricebox .pdp__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 6px 0 0;
+  padding: 0;
+  background: none;
+  font-size: var(--fs-small);
+  color: var(--ink);
+}
+
+.pdp__pricebox .pdp__note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pdp .pdp__summary {
+  margin-top: 22px;
+  font-size: var(--fs-body);
+}
+
+/* Buy box: olive primary actions and selected size, rounded controls */
+.pdp .buy__row {
+  margin-top: 26px;
+}
+
+.pdp .buy__sizes .size {
+  height: 54px;
+  border-radius: 6px;
+}
+
+.pdp .size[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+.pdp .qty {
+  height: 58px;
+  border-radius: 6px;
+}
+
+.pdp .buy__add {
+  min-height: 58px;
+  gap: 12px;
+  border-radius: 6px;
+}
+
+.pdp .buy__save {
+  width: 58px;
+  height: 58px;
+  border-radius: 6px;
+}
+
+.pdp .buy__info {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+  border-top: 0;
+}
+
+.pdp .buy__info details {
+  border: 0;
+  background: var(--tint);
+  border-radius: 8px;
+}
+
+.pdp .buy__info summary {
+  padding: 18px 20px;
+  font: 700 var(--fs-body) / 1.3 var(--ui);
+}
+
+.pdp .buy__info summary svg {
+  flex-shrink: 0;
+  color: var(--ink);
+}
+
+.pdp .buy__info details p {
+  padding: 0 20px 20px 54px;
+}
+
+/* About section: links sit under the specification list */
+.pdp-details__body p {
+  font-size: var(--fs-body);
+}
+
+.pdp-details__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-top: 28px;
+}
+
+@media (max-width: 900px) {
+  .pdp {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pdp-gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pdp-gallery__main {
+    order: -1;
+  }
+
+  .pdp-gallery__thumbs {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .pdp__features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-gallery__thumb {
+    transition: none;
   }
 }

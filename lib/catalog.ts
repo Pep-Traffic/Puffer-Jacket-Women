@@ -416,3 +416,12 @@ export function photoForProduct(product: Product): Photo {
 export function photoForCategory(category: Category): Photo {
   return category.photos[0];
 }
+
+// The product gallery: the product's own stock photo first, then the other
+// photos in its category, up to five views. All are labelled as stock.
+export function galleryForProduct(product: Product): Photo[] {
+  const cat = categoryBySlug(product.category);
+  const main = photoForProduct(product);
+  const others = (cat?.photos ?? []).filter((p) => p.src !== main.src);
+  return [main, ...others].slice(0, 5);
+}

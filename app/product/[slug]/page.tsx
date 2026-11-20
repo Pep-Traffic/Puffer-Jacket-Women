@@ -1,21 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Info } from "@phosphor-icons/react/dist/ssr";
+import { Info, Ruler, ShieldCheck, Snowflake, Tag, TShirt } from "@phosphor-icons/react/dist/ssr";
 import Split from "@/components/Split";
 import { notFound } from "next/navigation";
 import {
   categoryBySlug,
-  photoForProduct,
+  galleryForProduct,
   productBySlug,
   products,
   productsIn,
   sizesFor,
 } from "@/lib/catalog";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/seo";
-import { swatchFor } from "@/lib/swatch";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import PhotoFrame from "@/components/PhotoFrame";
-import ZoomFrame from "@/components/ZoomFrame";
+import ProductGallery from "@/components/ProductGallery";
 import AddToBag from "@/components/AddToBag";
 import ProductCard from "@/components/ProductCard";
 import JsonLd from "@/components/JsonLd";
@@ -89,28 +87,39 @@ export default async function ProductPage({ params }: { params: Params }) {
 
       <section className="container pdp" aria-label={product.name}>
         <SettleImage className="pdp__gallery">
-          <ZoomFrame>
-            <PhotoFrame
-              photo={photoForProduct(product)}
-              ratio="4 / 5"
-              priority
-              caption="Stock photo. The product photograph replaces this before launch."
-            />
-          </ZoomFrame>
+          <ProductGallery photos={galleryForProduct(product)} />
+          <ul className="pdp__features" aria-label="At a glance">
+            <li>
+              <TShirt size={28} aria-hidden="true" />
+              <span>{category.name}</span>
+            </li>
+            <li>
+              <Ruler size={28} aria-hidden="true" />
+              <span>{category.sizing === "apparel" ? "XS to XL" : "One size"}</span>
+            </li>
+            <li>
+              <Snowflake size={28} aria-hidden="true" />
+              <span>Fill to confirm</span>
+            </li>
+            <li>
+              <ShieldCheck size={28} aria-hidden="true" />
+              <span>Care on the label</span>
+            </li>
+          </ul>
         </SettleImage>
 
         <Reveal className="pdp__info" delay={0.1}>
-          <h1><Split>{product.name}</Split></h1>
-          <p className="pdp__colour">
-            <span className="card__swatch" style={{ ["--sw" as string]: swatchFor(product.colour) }} aria-hidden="true" />
-            {product.colour}
-          </p>
+          <p className="pdp__badge">Placeholder product</p>
+          <h1 className="pdp__title">{product.name}</h1>
           <div className="pdp__pricebox">
-            <p className="pdp__price">Price to confirm</p>
-            <p className="pdp__note">
-              <Info size={16} aria-hidden="true" />
-              Placeholder product. Price, materials and sizing are confirmed before launch.
-            </p>
+            <Tag size={26} aria-hidden="true" />
+            <div>
+              <p className="pdp__price">Price to confirm</p>
+              <p className="pdp__note">
+                <Info size={16} aria-hidden="true" />
+                Price, materials and sizing are confirmed before launch.
+              </p>
+            </div>
           </div>
           <p className="pdp__summary">{product.summary}</p>
 
@@ -120,26 +129,6 @@ export default async function ProductPage({ params }: { params: Params }) {
             colour={product.colour}
             sizes={sizesFor(product.category)}
           />
-
-          <dl className="specs">
-            <dt>Shell</dt>
-            <dd>To confirm</dd>
-            <dt>Fill</dt>
-            <dd>To confirm</dd>
-            <dt>Care</dt>
-            <dd>Follow the care label</dd>
-            <dt>Sizing</dt>
-            <dd>{category.sizing === "apparel" ? "XS to XL" : "One size"}</dd>
-          </dl>
-
-          <p className="pdp__links">
-            <Link href="/size-guide" className="textlink">
-              Size guide
-            </Link>
-            <Link href="/guide" className="textlink">
-              Buying guide
-            </Link>
-          </p>
         </Reveal>
       </section>
 
@@ -152,36 +141,34 @@ export default async function ProductPage({ params }: { params: Params }) {
             </p>
           </Reveal>
           <Reveal delay={0.05} className="pdp-details__body">
-            <details className="accordion" open>
-              <summary>Details</summary>
-              <p>
-                {product.summary} Shell, fill and closure are confirmed before launch. This women's style sits in the{" "}
-                {category.name.toLowerCase()} range, so you can compare it with the rest of the collection.
+            <p className="prose">
+              {product.summary} Shell, fill and closure are confirmed before launch. This women's style sits in the{" "}
+              {category.name.toLowerCase()} range, so you can compare it with the rest of the collection.
+            </p>
+            <p className="prose">{category.paragraphs[2]}</p>
+            {category.looks.map((look) => (
+              <p className="prose" key={look.title}>
+                <strong>{look.title}.</strong> {look.body}
               </p>
-            </details>
-            <details className="accordion">
-              <summary>Fit and layering</summary>
-              <p>{category.paragraphs[2]}</p>
-            </details>
-            <details className="accordion">
-              <summary>How to wear it</summary>
-              {category.looks.map((look) => (
-                <p key={look.title}>
-                  <strong>{look.title}.</strong> {look.body}
-                </p>
-              ))}
-            </details>
-            <details className="accordion">
-              <summary>Care</summary>
-              <p>
-                Follow the care label. As a general rule, wash gently, dry fully, and avoid long periods compressed in
-                a bag.
-              </p>
-            </details>
-            <details className="accordion">
-              <summary>Delivery and returns</summary>
-              <p>Delivery and return details are confirmed before launch. This section shows the final policy.</p>
-            </details>
+            ))}
+            <dl className="specs">
+              <dt>Shell</dt>
+              <dd>To confirm</dd>
+              <dt>Fill</dt>
+              <dd>To confirm</dd>
+              <dt>Care</dt>
+              <dd>Follow the care label</dd>
+              <dt>Sizing</dt>
+              <dd>{category.sizing === "apparel" ? "XS to XL" : "One size"}</dd>
+            </dl>
+            <p className="pdp-details__links">
+              <Link href="/size-guide" className="textlink">
+                Size guide
+              </Link>
+              <Link href="/guide" className="textlink">
+                Buying guide
+              </Link>
+            </p>
           </Reveal>
         </div>
       </section>

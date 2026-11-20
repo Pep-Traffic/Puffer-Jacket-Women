@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Heart, Minus, Plus, Ruler, Truck, ArrowsClockwise, Drop, Check } from "@phosphor-icons/react";
+import {
+  ArrowsClockwise,
+  Check,
+  Heart,
+  Minus,
+  Plus,
+  Ruler,
+  ShieldCheck,
+  ShoppingCart,
+  Truck,
+} from "@phosphor-icons/react";
 import { useCart } from "./CartProvider";
 import { swatchFor } from "@/lib/swatch";
 
@@ -109,6 +119,7 @@ export default function AddToBag({ slug, name, colour, sizes }: Props) {
           </button>
         </div>
         <button type="button" className="btn btn--accent buy__add" disabled={!size} onClick={handleAdd}>
+          <ShoppingCart size={20} aria-hidden="true" />
           {size ? "Add to bag" : "Select a size"}
         </button>
         <button
@@ -158,7 +169,7 @@ export default function AddToBag({ slug, name, colour, sizes }: Props) {
         </details>
         <details>
           <summary>
-            <Drop size={20} aria-hidden="true" /> Care
+            <ShieldCheck size={20} aria-hidden="true" /> Care
           </summary>
           <p>Follow the care label. Wash gently on a cool setting and dry fully to restore the loft.</p>
         </details>
