@@ -15,6 +15,7 @@ import {
 } from "@phosphor-icons/react";
 import { useCart } from "./CartProvider";
 import { swatchFor } from "@/lib/swatch";
+import { readSaved, writeSaved } from "@/lib/saved";
 
 type Props = {
   slug: string;
@@ -32,25 +33,16 @@ export default function AddToBag({ slug, name, colour, sizes }: Props) {
 
   // Saved pieces live only in this browser.
   useEffect(() => {
-    try {
-      const list = JSON.parse(localStorage.getItem("pjw-saved") || "[]") as string[];
-      setSaved(list.includes(slug));
-    } catch {
-      /* storage unavailable: start unsaved */
-    }
+    setSaved(readSaved().includes(slug));
   }, [slug]);
 
   function toggleSave() {
     const next = !saved;
     setSaved(next);
-    try {
-      const list = new Set(JSON.parse(localStorage.getItem("pjw-saved") || "[]") as string[]);
-      if (next) list.add(slug);
-      else list.delete(slug);
-      localStorage.setItem("pjw-saved", JSON.stringify([...list]));
-    } catch {
-      /* storage unavailable: keep the state for this visit only */
-    }
+    const list = new Set(readSaved());
+    if (next) list.add(slug);
+    else list.delete(slug);
+    writeSaved([...list]);
   }
 
   function handleAdd() {

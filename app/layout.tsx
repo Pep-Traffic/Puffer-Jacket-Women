@@ -55,9 +55,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <CartProvider>
-          <div className="announce">
-            <p>Free fit guidance on every page. Prices and shipping are confirmed before checkout.</p>
-          </div>
           <SiteHeader />
           <main id="main">{children}</main>
           <SiteFooter />
