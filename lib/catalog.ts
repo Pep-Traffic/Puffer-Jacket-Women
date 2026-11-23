@@ -33,6 +33,7 @@ export type Product = {
   featured: boolean;
   placeholder: true;
   price: number | null;
+  photos?: Photo[];
 };
 
 export const categories: Category[] = [
@@ -364,6 +365,14 @@ export const categories: Category[] = [
   },
 ];
 
+// The Aurora Luxe Puffer Jacket's own photos: front, back, side and three-quarter.
+const auroraPhotos: Photo[] = [
+  { src: "/products/aurora-luxe-puffer-jacket/1.webp", alt: "Aurora Luxe Puffer Jacket in black, front view", width: 1122, height: 1210 },
+  { src: "/products/aurora-luxe-puffer-jacket/2.webp", alt: "Aurora Luxe Puffer Jacket in black, back view", width: 1122, height: 1210 },
+  { src: "/products/aurora-luxe-puffer-jacket/3.webp", alt: "Aurora Luxe Puffer Jacket in black, side view", width: 1122, height: 1210 },
+  { src: "/products/aurora-luxe-puffer-jacket/4.webp", alt: "Aurora Luxe Puffer Jacket in black, three-quarter view", width: 1122, height: 1210 },
+];
+
 export const products: Product[] = [
   { slug: "hooded-puffer-jacket", name: "Hooded Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A hooded long-sleeve puffer for everyday cold weather.", featured: true, placeholder: true, price: null },
   { slug: "cropped-puffer-jacket", name: "Cropped Puffer Jacket", category: "long-sleeve", colour: "Ivory", summary: "A cropped puffer that sits above the waist.", featured: false, placeholder: true, price: null },
@@ -371,6 +380,7 @@ export const products: Product[] = [
   { slug: "belted-puffer-jacket", name: "Belted Puffer Jacket", category: "long-sleeve", colour: "Oxblood", summary: "A puffer with a self-tie belt at the waist.", featured: false, placeholder: true, price: null },
   { slug: "quilted-puffer-parka", name: "Quilted Puffer Parka", category: "long-sleeve", colour: "Stone", summary: "A quilted parka with a relaxed fit.", featured: false, placeholder: true, price: null },
   { slug: "packable-puffer-jacket", name: "Packable Puffer Jacket", category: "long-sleeve", colour: "Navy", summary: "A lightweight puffer that folds into its own pocket.", featured: false, placeholder: true, price: null },
+  { slug: "aurora-luxe-puffer-jacket", name: "Aurora Luxe Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A glossy black puffer with a high funnel collar and silver zips, cut to the waist.", featured: false, placeholder: true, price: null, photos: auroraPhotos },
   { slug: "quilted-puffer-vest", name: "Quilted Puffer Vest", category: "sleeveless", colour: "Black", summary: "A classic quilted vest for layering.", featured: true, placeholder: true, price: null },
   { slug: "hooded-puffer-vest", name: "Hooded Puffer Vest", category: "sleeveless", colour: "Olive", summary: "A hooded puffer vest with a close neck.", featured: false, placeholder: true, price: null },
   { slug: "cropped-puffer-vest", name: "Cropped Puffer Vest", category: "sleeveless", colour: "Ivory", summary: "A cropped vest that layers over a knit.", featured: false, placeholder: true, price: null },
@@ -404,9 +414,10 @@ export function sizesFor(categorySlug: string): string[] {
   return cat?.sizing === "one-size" ? oneSize : apparelSizes;
 }
 
-// Each product shows a stock photo from its category. Products within a
-// category cycle through that category's photos.
+// A product with its own photos shows those first. Other products show a stock
+// photo from their category, cycling through that category's photos.
 export function photoForProduct(product: Product): Photo {
+  if (product.photos?.length) return product.photos[0];
   const cat = categoryBySlug(product.category);
   const list = cat?.photos ?? [photos.heroYellowPuffer];
   const index = productsIn(product.category).findIndex((p) => p.slug === product.slug);
@@ -417,9 +428,10 @@ export function photoForCategory(category: Category): Photo {
   return category.photos[0];
 }
 
-// The product gallery: the product's own stock photo first, then the other
-// photos in its category, up to five views. All are labelled as stock.
+// The product gallery: the product's own photos if it has them. Otherwise its
+// stock photo first, then the other photos in its category, up to five views.
 export function galleryForProduct(product: Product): Photo[] {
+  if (product.photos?.length) return product.photos.slice(0, 5);
   const cat = categoryBySlug(product.category);
   const main = photoForProduct(product);
   const others = (cat?.photos ?? []).filter((p) => p.src !== main.src);
