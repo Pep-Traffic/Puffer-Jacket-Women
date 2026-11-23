@@ -20,6 +20,7 @@ import {
   categoryBySlug,
   productBySlug,
   products,
+  photoForProduct,
   productsIn,
   type Product,
 } from "@/lib/catalog";
@@ -311,11 +312,19 @@ export default function SiteHeader({ lang = "en" }: { lang?: Locale }) {
                 savedProducts.length === 0 ? (
                   <p className="drop-empty">{s.savedEmpty}</p>
                 ) : (
-                  <ul className="drop-grid">
+                  <ul className="drop-grid drop-grid--photos">
                     {savedProducts.map((p) => (
                       <li key={p.slug}>
                         <Link href={localePath(lang, `/product/${p.slug}`)}>
-                          <span className="drop-swatch" style={{ ["--sw" as string]: swatchFor(p.colour) }} aria-hidden="true" />
+                          <span className="drop-photo">
+                            <img
+                              src={photoForProduct(p).src}
+                              alt=""
+                              width={photoForProduct(p).width}
+                              height={photoForProduct(p).height}
+                              loading="lazy"
+                            />
+                          </span>
                           <span className="drop-name">{p.name}</span>
                           <span className="drop-meta">{p.colour}</span>
                         </Link>
