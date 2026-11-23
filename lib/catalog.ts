@@ -381,6 +381,14 @@ const monarchPhotos: Photo[] = [
   { src: "/products/monarch-pearl-puffer-jacket/4.webp", alt: "Monarch Pearl Puffer Jacket in champagne, back view", width: 1122, height: 1140 },
 ];
 
+// The Celestine Burgundy Puffer's own photos: front, side, back and three-quarter.
+const celestinePhotos: Photo[] = [
+  { src: "/products/celestine-burgundy-puffer/1.webp", alt: "Celestine Burgundy Puffer in burgundy, front view", width: 1122, height: 1200 },
+  { src: "/products/celestine-burgundy-puffer/2.webp", alt: "Celestine Burgundy Puffer in burgundy, back view", width: 1122, height: 1200 },
+  { src: "/products/celestine-burgundy-puffer/3.webp", alt: "Celestine Burgundy Puffer in burgundy, side view", width: 1122, height: 1200 },
+  { src: "/products/celestine-burgundy-puffer/4.webp", alt: "Celestine Burgundy Puffer in burgundy, three-quarter view", width: 1122, height: 1165 },
+];
+
 export const products: Product[] = [
   { slug: "hooded-puffer-jacket", name: "Hooded Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A hooded long-sleeve puffer for everyday cold weather.", featured: true, placeholder: true, price: null },
   { slug: "cropped-puffer-jacket", name: "Cropped Puffer Jacket", category: "long-sleeve", colour: "Ivory", summary: "A cropped puffer that sits above the waist.", featured: false, placeholder: true, price: null },
@@ -390,6 +398,7 @@ export const products: Product[] = [
   { slug: "packable-puffer-jacket", name: "Packable Puffer Jacket", category: "long-sleeve", colour: "Navy", summary: "A lightweight puffer that folds into its own pocket.", featured: false, placeholder: true, price: null },
   { slug: "aurora-luxe-puffer-jacket", name: "Aurora Luxe Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A glossy black puffer with a high funnel collar and silver zips, cut to the waist.", featured: false, placeholder: true, price: null, photos: auroraPhotos },
   { slug: "monarch-pearl-puffer-jacket", name: "Monarch Pearl Puffer Jacket", category: "long-sleeve", colour: "Champagne", summary: "A pearl-finish puffer with a high funnel collar and gold zips, cut to the waist.", featured: false, placeholder: true, price: null, photos: monarchPhotos },
+  { slug: "celestine-burgundy-puffer", name: "Celestine Burgundy Puffer", category: "long-sleeve", colour: "Burgundy", summary: "A glossy burgundy puffer with a detachable hood and silver zips, cut to the waist.", featured: false, placeholder: true, price: null, photos: celestinePhotos },
   { slug: "quilted-puffer-vest", name: "Quilted Puffer Vest", category: "sleeveless", colour: "Black", summary: "A classic quilted vest for layering.", featured: true, placeholder: true, price: null },
   { slug: "hooded-puffer-vest", name: "Hooded Puffer Vest", category: "sleeveless", colour: "Olive", summary: "A hooded puffer vest with a close neck.", featured: false, placeholder: true, price: null },
   { slug: "cropped-puffer-vest", name: "Cropped Puffer Vest", category: "sleeveless", colour: "Ivory", summary: "A cropped vest that layers over a knit.", featured: false, placeholder: true, price: null },
