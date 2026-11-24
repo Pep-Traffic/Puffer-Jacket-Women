@@ -259,11 +259,19 @@ export default function SiteHeader({ lang = "en" }: { lang?: Locale }) {
                       {s.shopAll}: {catName(openCategory.slug)}
                     </Link>
                   </div>
-                  <ul className="drop-grid">
+                  <ul className="drop-grid drop-grid--photos">
                     {productsIn(openCategory.slug).map((p) => (
                       <li key={p.slug}>
                         <Link href={localePath(lang, `/product/${p.slug}`)}>
-                          <span className="drop-swatch" style={{ ["--sw" as string]: swatchFor(p.colour) }} aria-hidden="true" />
+                          <span className="drop-photo">
+                            <img
+                              src={photoForProduct(p).src}
+                              alt=""
+                              width={photoForProduct(p).width}
+                              height={photoForProduct(p).height}
+                              loading="lazy"
+                            />
+                          </span>
                           <span className="drop-name">{p.name}</span>
                           <span className="drop-meta">{p.colour}</span>
                         </Link>
