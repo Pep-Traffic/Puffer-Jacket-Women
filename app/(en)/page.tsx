@@ -38,10 +38,14 @@ import { FaqList } from "@/components/FaqList";
 import CategoryIcon from "@/components/CategoryIcons";
 import { DrawLine, Reveal, SettleImage, Stagger, StaggerItem } from "@/components/Motion";
 
+// The homepage title is absolute, so the layout's " | Puffer Jacket Women" template is not added twice.
+const homeTitle = "Puffer Jacket Women | Shop Women's Puffer Jackets";
+const homeDescription =
+  "Discover women's puffer jackets in cropped, long, lightweight and quilted styles. Explore fashionable winter outerwear, colors and fits.";
+
 export const metadata: Metadata = {
-  title: { absolute: "Puffer Jacket Women: Warm Puffer Jackets, Vests and Layers" },
-  description:
-    "Puffer Jacket Women: warm puffer jackets, sleeveless puffer vests, short sleeve layers, caps and hats for women. Fill, fit and fabric explained on every page.",
+  title: { absolute: homeTitle },
+  description: homeDescription,
   alternates: { canonical: "/" },
   // Nested social fields replace the layout's values, so the full set is repeated here.
   openGraph: {
@@ -49,8 +53,8 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: site.locale,
     url: site.url,
-    title: site.name,
-    description: site.description,
+    title: homeTitle,
+    description: homeDescription,
     images: [
       {
         url: photos.winterField.src,
@@ -62,8 +66,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: site.name,
-    description: site.description,
+    title: homeTitle,
+    description: homeDescription,
     images: [photos.winterField.src],
   },
 };
@@ -215,7 +219,7 @@ export default function HomePage() {
       <section className="container hero" aria-labelledby="hero-heading">
         <Reveal className="hero__copy" y={18}>
           <h1 id="hero-heading">
-            <strong>Puffer jackets</strong> for women, <span className="hero__accent">built for the cold.</span>
+            <strong>Women&apos;s Puffer Jackets</strong>
           </h1>
           <p className="hero__lede">
             Puffer jackets for women in long sleeve, sleeveless and short sleeve styles, plus caps, hats and accessories.
