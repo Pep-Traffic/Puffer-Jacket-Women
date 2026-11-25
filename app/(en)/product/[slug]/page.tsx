@@ -5,12 +5,14 @@ import { notFound } from "next/navigation";
 import {
   categoryBySlug,
   colourOptionsFor,
+  photoForProduct,
   productBySlug,
   products,
   productsIn,
   sizesFor,
 } from "@/lib/catalog";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/seo";
+import { site } from "@/lib/site";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductPurchase from "@/components/ProductPurchase";
 import ProductCard from "@/components/ProductCard";
@@ -35,14 +37,27 @@ export async function generateMetadata({
   const path = `/product/${product.slug}`;
   const sizeLine = categoryBySlug(product.category)?.sizing === "apparel" ? "Sizes XS to XL." : "One size.";
   const description = `${product.name} for women in ${product.colour.toLowerCase()}. ${product.summary} ${sizeLine} Price to confirm.`;
+  const title = `${product.name} for women`;
+  const photo = photoForProduct(product);
+  // Nested social fields replace the layout's values, so the full set is repeated here.
   return {
-    title: `${product.name} for women`,
+    title,
     description,
     alternates: { canonical: path },
     openGraph: {
-      title: `${product.name} for women`,
+      type: "website",
+      siteName: site.name,
+      locale: site.locale,
+      title,
       description,
       url: path,
+      images: [{ url: photo.src, width: photo.width, height: photo.height, alt: photo.alt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [photo.src],
     },
   };
 }

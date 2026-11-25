@@ -18,6 +18,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { categories, photoForCategory, products } from "@/lib/catalog";
 import { photos } from "@/lib/images";
+import { site } from "@/lib/site";
 import { faqs } from "@/lib/faq";
 import { glossary } from "@/lib/glossary";
 import { faqSchema } from "@/lib/seo";
@@ -42,6 +43,29 @@ export const metadata: Metadata = {
   description:
     "Puffer Jacket Women: warm puffer jackets, sleeveless puffer vests, short sleeve layers, caps and hats for women. Fill, fit and fabric explained on every page.",
   alternates: { canonical: "/" },
+  // Nested social fields replace the layout's values, so the full set is repeated here.
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    locale: site.locale,
+    url: site.url,
+    title: site.name,
+    description: site.description,
+    images: [
+      {
+        url: photos.winterField.src,
+        width: photos.winterField.width,
+        height: photos.winterField.height,
+        alt: photos.winterField.alt,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.name,
+    description: site.description,
+    images: [photos.winterField.src],
+  },
 };
 
 const layers: Layer[] = [
