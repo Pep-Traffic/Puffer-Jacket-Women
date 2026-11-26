@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowsOutSimple, X } from "@phosphor-icons/react";
 import type { Photo } from "@/lib/images";
 
-// A main photo with a thumbnail column and a full-screen view. The photos are
-// stock images until product photography is added, and are labelled as such.
-export default function ProductGallery({ photos }: { photos: Photo[] }) {
+// A main photo with a thumbnail column and a full-screen view. Stock images,
+// used when a product has no photos of its own, are labelled as such.
+export default function ProductGallery({ photos, stock = false }: { photos: Photo[]; stock?: boolean }) {
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
   const expandButton = useRef<HTMLButtonElement>(null);
@@ -48,7 +48,7 @@ export default function ProductGallery({ photos }: { photos: Photo[] }) {
 
       <div className="pdp-gallery__main">
         <img src={current.src} alt={current.alt} width={current.width} height={current.height} />
-        <span className="pdp-gallery__chip">Stock photo</span>
+        {stock ? <span className="pdp-gallery__chip">Stock photo</span> : null}
         <button
           ref={expandButton}
           type="button"

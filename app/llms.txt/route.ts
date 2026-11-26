@@ -1,6 +1,7 @@
-import { categories, products } from "@/lib/catalog";
+import { colourOptionsFor, productsIn, products, sizesFor, stockedCategories } from "@/lib/catalog";
 import { faqs } from "@/lib/faq";
 import { glossary } from "@/lib/glossary";
+import { guides } from "@/lib/guides";
 import { absoluteUrl, site } from "@/lib/site";
 
 // llms.txt: a plain-text guide to the store for AI assistants and answer engines.
@@ -8,51 +9,57 @@ export const dynamic = "force-static";
 
 export function GET() {
   const lines: string[] = [];
+  const stocked = stockedCategories();
 
   lines.push(`# ${site.name}`);
   lines.push("");
-  lines.push(
-    "> Premium women's outerwear and layers: puffer jackets, sleeveless puffer vests, short-sleeve layers, caps, hats and accessories, in one store.",
-  );
+  lines.push(`> ${site.description}`);
   lines.push("");
   lines.push(
-    `${site.name} is an online store at ${site.url}. The catalogue is organised by sleeve length and category. Product details, prices and imagery are placeholders until the catalogue is finalised.`,
+    `${site.name} is an online clothing store at ${site.url} for women's puffer jackets and vests. It is preparing to open: prices, shell and fill details, delivery, returns and payment options are not yet published.`,
   );
   lines.push("");
 
   lines.push("## Key facts");
-  lines.push(`- Subject: women's puffer jackets, sleeveless puffer vests, short sleeve layers, caps, hats and accessories.`);
-  lines.push("- Sizes: apparel XS to XL; accessories are one size, as stated on each product page.");
-  lines.push("- Prices and ratings: not yet published. Shipping and returns are confirmed before checkout.");
-  lines.push("- Fit and fill guidance: the buying guide and size guide explain how to choose and measure.");
-  lines.push("- Imagery: stock photographs until product photography is added.");
-  lines.push(`- Logo: ${absoluteUrl("/brand/logo.png")} (Puffer Jacket Women wordmark with a mountain and snowflake emblem).`);
+  lines.push(
+    `- Listed now: ${stocked.map((c) => `${productsIn(c.slug).length} ${c.name.toLowerCase()} styles`).join(" and ")} (${products.length} in total).`,
+  );
+  lines.push("- Sizes: XS to XL.");
+  lines.push("- Prices, ratings and reviews: not yet published.");
+  lines.push(`- About: ${absoluteUrl("/about")}`);
+  lines.push(`- Logo: ${absoluteUrl("/brand/logo.png")}`);
   lines.push("");
 
   lines.push("## Categories");
-  for (const c of categories) {
-    lines.push(
-      `- [${c.title}](${absoluteUrl(`/category/${c.slug}`)}): ${c.intro}`,
-    );
+  for (const c of stocked) {
+    lines.push(`- [${c.title}](${absoluteUrl(`/category/${c.slug}`)}): ${c.intro}`);
   }
   lines.push("");
 
   lines.push("## Products");
   for (const p of products) {
+    const colours = colourOptionsFor(p).map((o) => o.colour).join(", ");
+    const sizes = sizesFor(p.category);
+    const d = p.details;
     lines.push(
-      `- [${p.name}](${absoluteUrl(`/product/${p.slug}`)}): ${p.colour}. ${p.summary}`,
+      `- [${p.name}](${absoluteUrl(`/product/${p.slug}`)}): ${p.summary} Colour: ${colours}. Length: ${d.length}. Collar or hood: ${d.neck}. Front: ${d.front}. Pockets: ${d.pockets}. Sizes: ${sizes[0]} to ${sizes[sizes.length - 1]}.`,
     );
   }
   lines.push("");
 
   lines.push("## Guides");
-  lines.push(`- [How to choose a puffer jacket](${absoluteUrl("/guide")}): fill, shell fabric, sleeve length, fit, layering and care.`);
-  lines.push(`- [Size guide](${absoluteUrl("/size-guide")}): how to measure and the size chart.`);
-  lines.push(`- [Puffer jacket questions](${absoluteUrl("/faq")}): fill power, fit, layering and care.`);
+  lines.push(
+    `- [How to choose a puffer jacket for women](${absoluteUrl("/guide")}): weather, fill, shell fabric, length, fit, layering and care.`,
+  );
+  for (const g of guides) {
+    lines.push(`- [${g.title}](${absoluteUrl(`/guide/${g.slug}`)}): ${g.answer}`);
+  }
+  lines.push(`- [Size guide](${absoluteUrl("/size-guide")}): how to measure and what to do between sizes.`);
+  lines.push(`- [Puffer jacket questions](${absoluteUrl("/faq")}): warmth, fit, layering and care.`);
   lines.push("");
 
   lines.push("## Short answers");
-  for (const f of faqs) {
+  for (const f of faqs.filter((item) => !item.pending)) {
     lines.push(`- **${f.q}** ${f.a}`);
   }
   lines.push("");
@@ -66,7 +73,7 @@ export function GET() {
   lines.push("## Notes for AI assistants");
   lines.push("- Prices are not yet published. Do not quote a price for any product.");
   lines.push("- Ratings and reviews are not yet published. Do not quote ratings.");
-  lines.push("- Checkout and the bag are private and are not indexed.");
+  lines.push("- Shell and fill are not yet confirmed. Do not state that a listed product is down or synthetic.");
   lines.push("");
 
   return new Response(lines.join("\n"), {

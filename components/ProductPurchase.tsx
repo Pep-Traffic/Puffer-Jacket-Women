@@ -15,18 +15,20 @@ type Props = {
   sizing: "apparel" | "one-size";
   sizes: string[];
   options: ColourVariant[];
+  // True when the photos are stock images, which are labelled as such.
+  stock: boolean;
 };
 
 // The product's purchase area: its photos, its colours and the add-to-bag form.
 // Choosing a colour swaps the photos and the colour sent to the bag together.
-export default function ProductPurchase({ slug, name, summary, categoryName, sizing, sizes, options }: Props) {
+export default function ProductPurchase({ slug, name, summary, categoryName, sizing, sizes, options, stock }: Props) {
   const [active, setActive] = useState(0);
   const current = options[active] ?? options[0];
 
   return (
     <section className="container pdp" aria-label={name}>
       <SettleImage className="pdp__gallery">
-        <ProductGallery key={current.colour} photos={current.photos} />
+        <ProductGallery key={current.colour} photos={current.photos} stock={stock} />
         <ul className="pdp__features" aria-label="At a glance">
           <li>
             <TShirt size={28} aria-hidden="true" />
@@ -48,7 +50,6 @@ export default function ProductPurchase({ slug, name, summary, categoryName, siz
       </SettleImage>
 
       <Reveal className="pdp__info" delay={0.1}>
-        <p className="pdp__badge">Placeholder product</p>
         <h1 className="pdp__title">{name}</h1>
         <div className="pdp__pricebox">
           <Tag size={26} aria-hidden="true" />

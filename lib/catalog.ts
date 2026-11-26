@@ -1,7 +1,7 @@
-// Catalogue data. Every product is a PLACEHOLDER until real photos,
-// specifications and prices are supplied. Prices are deliberately null:
-// no price is invented. Placeholder products are never given Offer or
-// rating data in structured data.
+// Catalogue data. Shell, fill and prices are not confirmed yet, so prices are
+// deliberately null: no price is invented. Products are never given Offer or
+// rating data in structured data until those facts exist. The "details" of a
+// product describe only what its photos and summary show.
 
 import { photos, type Photo } from "./images";
 
@@ -30,6 +30,14 @@ export type ColourVariant = {
   photos: Photo[];
 };
 
+export type ProductDetails = {
+  length: "Waist" | "Hip" | "Longline";
+  neck: string;
+  front: string;
+  pockets: string;
+  quilting: string;
+};
+
 export type Product = {
   slug: string;
   name: string;
@@ -39,6 +47,7 @@ export type Product = {
   featured: boolean;
   placeholder: true;
   price: number | null;
+  details: ProductDetails;
   photos?: Photo[];
   variants?: ColourVariant[];
 };
@@ -49,7 +58,7 @@ export const categories: Category[] = [
     name: "Long sleeve",
     title: "Long sleeve puffer jackets for women",
     intro:
-      "Women's long sleeve puffer jackets for cold days and layering. Choose a hooded, cropped, belted, long or packable style.",
+      "Women's long sleeve puffer jackets for cold days and layering, in funnel collar, hooded and longline styles.",
     paragraphs: [
       "A long sleeve puffer is the everyday answer to cold weather. The sleeves cover the wrists, and stitched channels hold the insulation in place, so the warmth stays where it belongs.",
       "Styles vary more than the name suggests. A hooded jacket helps in wind and drizzle, a cropped cut sits above the waist for a balanced line with high-waisted trousers, and a longer coat covers the hips on the coldest days.",
@@ -474,23 +483,32 @@ const burgundyLonglinePhotos: Photo[] = [
   { src: "/products/burgundy-diamond-longline-coat/3.webp", alt: "Burgundy Diamond Quilted Longline Coat, side view", width: 1122, height: 1402 },
 ];
 
+// The Classic Matte Black Puffer Jacket's own photos: front, back, side and three-quarter.
+const matteBlackPhotos: Photo[] = [
+  { src: "/products/classic-matte-black-puffer-jacket/1.webp", alt: "Classic Matte Black Puffer Jacket in black, front view", width: 1122, height: 1402 },
+  { src: "/products/classic-matte-black-puffer-jacket/2.webp", alt: "Classic Matte Black Puffer Jacket in black, back view", width: 1122, height: 1402 },
+  { src: "/products/classic-matte-black-puffer-jacket/3.webp", alt: "Classic Matte Black Puffer Jacket in black, side view", width: 1122, height: 1402 },
+  { src: "/products/classic-matte-black-puffer-jacket/4.webp", alt: "Classic Matte Black Puffer Jacket in black, three-quarter view", width: 1122, height: 1402 },
+];
+
 export const products: Product[] = [
-  { slug: "aurora-luxe-puffer-jacket", name: "Aurora Luxe Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A glossy black puffer with a high funnel collar and silver zips, cut to the waist.", featured: true, placeholder: true, price: null, photos: auroraPhotos },
-  { slug: "monarch-pearl-puffer-jacket", name: "Monarch Pearl Puffer Jacket", category: "long-sleeve", colour: "Champagne", summary: "A pearl-finish puffer with a high funnel collar and gold zips, cut to the waist.", featured: false, placeholder: true, price: null, photos: monarchPhotos },
-  { slug: "celestine-burgundy-puffer", name: "Celestine Burgundy Puffer", category: "long-sleeve", colour: "Burgundy", summary: "A glossy burgundy puffer with a detachable hood and silver zips, cut to the waist.", featured: true, placeholder: true, price: null, photos: celestinePhotos },
-  { slug: "sage-green-hooded-puffer-jacket", name: "Sage Green Hooded Puffer Jacket", category: "long-sleeve", colour: "Sage", summary: "A quilted sage-green puffer with a hood, drawcord ties and black cuffs, cut to the hip.", featured: false, placeholder: true, price: null, photos: sagePhotos },
-  { slug: "deep-plum-quilted-hooded-jacket", name: "Deep Plum Quilted Hooded Jacket", category: "long-sleeve", colour: "Deep Plum", summary: "A diamond-quilted deep plum jacket with a hood on drawcords, waist tabs and flap pockets, cut to the hip.", featured: false, placeholder: true, price: null, photos: deepPlumPhotos },
-  { slug: "navy-diamond-quilted-hooded-jacket", name: "Navy Diamond Quilted Hooded Jacket", category: "long-sleeve", colour: "Navy", summary: "A diamond-quilted navy jacket with a hood on drawcords, waist tabs and flap pockets, cut to the hip.", featured: false, placeholder: true, price: null, photos: navyJacketPhotos },
-  { slug: "burgundy-diamond-longline-coat", name: "Burgundy Diamond Quilted Longline Coat", category: "long-sleeve", colour: "Burgundy", summary: "A diamond-quilted burgundy longline coat with a corduroy collar, button front and flap pockets.", featured: false, placeholder: true, price: null, photos: burgundyLonglinePhotos },
-  { slug: "navy-quilted-puffer-vest", name: "Navy Quilted Puffer Vest", category: "sleeveless", colour: "Navy", summary: "A quilted navy vest with a high collar and zip pockets, cut to the waist.", featured: false, placeholder: true, price: null, photos: navyVestPhotos },
-  { slug: "teal-chevron-puffer-vest", name: "Teal Chevron Puffer Vest", category: "sleeveless", colour: "Teal", summary: "A chevron-quilted teal vest with a stand collar and snap front, cut to the waist.", featured: false, placeholder: true, price: null, photos: tealVestPhotos },
-  { slug: "plum-quilted-puffer-vest", name: "Plum Quilted Puffer Vest", category: "sleeveless", colour: "Plum", summary: "A quilted plum vest with a high collar, zip front and zip pockets, cut to the waist.", featured: true, placeholder: true, price: null, photos: plumVestPhotos, variants: [
+  { slug: "aurora-luxe-puffer-jacket", name: "Aurora Luxe Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A glossy black puffer with a high funnel collar and silver zips, cut to the waist.", featured: true, placeholder: true, price: null, details: { length: "Waist", neck: "High funnel collar", front: "Silver zip", pockets: "Two zip pockets", quilting: "Horizontal channels" }, photos: auroraPhotos },
+  { slug: "monarch-pearl-puffer-jacket", name: "Monarch Pearl Puffer Jacket", category: "long-sleeve", colour: "Champagne", summary: "A pearl-finish puffer with a high funnel collar and gold zips, cut to the waist.", featured: false, placeholder: true, price: null, details: { length: "Waist", neck: "High funnel collar", front: "Gold zip", pockets: "Two zip pockets", quilting: "Horizontal channels" }, photos: monarchPhotos },
+  { slug: "celestine-burgundy-puffer", name: "Celestine Burgundy Puffer", category: "long-sleeve", colour: "Burgundy", summary: "A glossy burgundy puffer with a detachable hood and silver zips, cut to the waist.", featured: true, placeholder: true, price: null, details: { length: "Waist", neck: "Detachable hood and high collar", front: "Silver zip", pockets: "Two zip pockets", quilting: "Chevron channels" }, photos: celestinePhotos },
+  { slug: "sage-green-hooded-puffer-jacket", name: "Sage Green Hooded Puffer Jacket", category: "long-sleeve", colour: "Sage", summary: "A quilted sage-green puffer with a hood, drawcord ties and black cuffs, cut to the hip.", featured: false, placeholder: true, price: null, details: { length: "Hip", neck: "Hood with drawcords", front: "Zip with a snap flap", pockets: "Two side pockets", quilting: "Horizontal channels" }, photos: sagePhotos },
+  { slug: "deep-plum-quilted-hooded-jacket", name: "Deep Plum Quilted Hooded Jacket", category: "long-sleeve", colour: "Deep Plum", summary: "A diamond-quilted deep plum jacket with a hood on drawcords, waist tabs and flap pockets, cut to the hip.", featured: false, placeholder: true, price: null, details: { length: "Hip", neck: "Hood with drawcords", front: "Silver zip", pockets: "Two flap pockets", quilting: "Diamond quilting" }, photos: deepPlumPhotos },
+  { slug: "navy-diamond-quilted-hooded-jacket", name: "Navy Diamond Quilted Hooded Jacket", category: "long-sleeve", colour: "Navy", summary: "A diamond-quilted navy jacket with a hood on drawcords, waist tabs and flap pockets, cut to the hip.", featured: false, placeholder: true, price: null, details: { length: "Hip", neck: "Hood with drawcords", front: "Silver zip", pockets: "Two flap pockets", quilting: "Diamond quilting" }, photos: navyJacketPhotos },
+  { slug: "burgundy-diamond-longline-coat", name: "Burgundy Diamond Quilted Longline Coat", category: "long-sleeve", colour: "Burgundy", summary: "A diamond-quilted burgundy longline coat with a corduroy collar, button front and flap pockets.", featured: false, placeholder: true, price: null, details: { length: "Longline", neck: "Corduroy collar", front: "Button front", pockets: "Two flap pockets", quilting: "Diamond quilting" }, photos: burgundyLonglinePhotos },
+  { slug: "classic-matte-black-puffer-jacket", name: "Classic Matte Black Puffer Jacket", category: "long-sleeve", colour: "Black", summary: "A matte black quilted puffer with a high stand collar, black zip front and elastic cuffs, cut to the hip.", featured: false, placeholder: true, price: null, details: { length: "Hip", neck: "High stand collar", front: "Black zip", pockets: "Two side pockets", quilting: "Horizontal channels" }, photos: matteBlackPhotos },
+  { slug: "navy-quilted-puffer-vest", name: "Navy Quilted Puffer Vest", category: "sleeveless", colour: "Navy", summary: "A quilted navy vest with a high collar and zip pockets, cut to the waist.", featured: false, placeholder: true, price: null, details: { length: "Waist", neck: "High collar", front: "Zip", pockets: "Two zip pockets", quilting: "Horizontal channels" }, photos: navyVestPhotos },
+  { slug: "teal-chevron-puffer-vest", name: "Teal Chevron Puffer Vest", category: "sleeveless", colour: "Teal", summary: "A chevron-quilted teal vest with a stand collar and snap front, cut to the waist.", featured: false, placeholder: true, price: null, details: { length: "Waist", neck: "Stand collar", front: "Snap front over a zip", pockets: "Two zip pockets", quilting: "Chevron quilting" }, photos: tealVestPhotos },
+  { slug: "plum-quilted-puffer-vest", name: "Plum Quilted Puffer Vest", category: "sleeveless", colour: "Plum", summary: "A quilted plum vest with a high collar, zip front and zip pockets, cut to the waist.", featured: true, placeholder: true, price: null, details: { length: "Waist", neck: "High collar", front: "Zip", pockets: "Two zip pockets", quilting: "Diamond and chevron quilting" }, photos: plumVestPhotos, variants: [
     { colour: "Plum", photos: plumVestPhotos },
     { colour: "Emerald", photos: emeraldVestPhotos },
   ] },
-  { slug: "copper-rust-quilted-puffer-vest", name: "Copper Rust Quilted Puffer Vest", category: "sleeveless", colour: "Copper Rust", summary: "A diamond-quilted copper-rust vest with a high collar and zip pockets, cut to the waist.", featured: true, placeholder: true, price: null, photos: copperVestPhotos },
-  { slug: "burgundy-red-utility-quilted-vest", name: "Burgundy Red Utility Puffer Vest", category: "sleeveless", colour: "Burgundy Red", summary: "A quilted burgundy-red vest with a high collar, zip front and two flap pockets, cut to the waist.", featured: false, placeholder: true, price: null, photos: burgundyVestPhotos },
-  { slug: "olive-green-utility-quilted-vest", name: "Olive Green Utility Puffer Vest", category: "sleeveless", colour: "Olive Green", summary: "A quilted olive-green utility vest with a high collar on drawcords, corduroy trim and flap pockets, cut to the waist.", featured: false, placeholder: true, price: null, photos: oliveUtilityVestPhotos },
+  { slug: "copper-rust-quilted-puffer-vest", name: "Copper Rust Quilted Puffer Vest", category: "sleeveless", colour: "Copper Rust", summary: "A diamond-quilted copper-rust vest with a high collar and zip pockets, cut to the waist.", featured: true, placeholder: true, price: null, details: { length: "Waist", neck: "High collar", front: "Zip", pockets: "Two zip pockets", quilting: "Diamond quilting" }, photos: copperVestPhotos },
+  { slug: "burgundy-red-utility-quilted-vest", name: "Burgundy Red Utility Puffer Vest", category: "sleeveless", colour: "Burgundy Red", summary: "A quilted burgundy-red vest with a high collar, zip front and two flap pockets, cut to the waist.", featured: false, placeholder: true, price: null, details: { length: "Waist", neck: "High collar", front: "Zip", pockets: "Two flap pockets", quilting: "Horizontal channels" }, photos: burgundyVestPhotos },
+  { slug: "olive-green-utility-quilted-vest", name: "Olive Green Utility Puffer Vest", category: "sleeveless", colour: "Olive Green", summary: "A quilted olive-green utility vest with a high collar on drawcords, corduroy trim and flap pockets, cut to the waist.", featured: false, placeholder: true, price: null, details: { length: "Waist", neck: "High collar with drawcords", front: "Zip", pockets: "Two flap pockets", quilting: "Horizontal channels with corduroy trim" }, photos: oliveUtilityVestPhotos },
 ];
 
 export const apparelSizes = ["XS", "S", "M", "L", "XL"];
@@ -506,6 +524,17 @@ export function productBySlug(slug: string): Product | undefined {
 
 export function productsIn(categorySlug: string): Product[] {
   return products.filter((p) => p.category === categorySlug);
+}
+
+// Categories that have at least one product. Only these are offered to search
+// engines and described as available; the rest read as coming soon.
+export function stockedCategories(): Category[] {
+  return categories.filter((c) => productsIn(c.slug).length > 0);
+}
+
+export function styleCount(categorySlug: string): string {
+  const n = productsIn(categorySlug).length;
+  return n > 0 ? String(n) : "Coming soon";
 }
 
 export function sizesFor(categorySlug: string): string[] {

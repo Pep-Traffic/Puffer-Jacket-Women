@@ -1578,6 +1578,49 @@ textarea {
   max-width: 60ch;
 }
 
+.guide__byline {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: var(--fs-caption);
+}
+
+/* The short direct answer that opens a guide. */
+.guide .guide__answer {
+  margin-top: 28px;
+  padding: 20px 24px;
+  border: 1px solid var(--hairline);
+  font-size: var(--fs-lede);
+  line-height: 1.65;
+  max-width: 65ch;
+}
+
+.guide__list {
+  margin-top: 20px;
+  padding-left: 20px;
+  display: grid;
+  gap: 10px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  max-width: 65ch;
+  list-style: disc;
+}
+
+.guide__list--ordered {
+  list-style: decimal;
+}
+
+.guide__list--center {
+  margin: 28px auto 0;
+  max-width: none;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 28px;
+  text-align: center;
+}
+
 /* Size guide */
 .steps-grid {
   display: grid;

@@ -8,7 +8,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <article className="card">
       <Link href={`/product/${product.slug}`} aria-label={`${product.name}, ${product.colour}`}>
-        <PhotoFrame photo={photoForProduct(product)} caption="Stock photo" />
+        <PhotoFrame photo={photoForProduct(product)} caption={product.photos?.length ? undefined : "Stock photo"} />
         <div className="card__meta">
           <div className="card__text">
             <h3 className="card__name">{product.name}</h3>

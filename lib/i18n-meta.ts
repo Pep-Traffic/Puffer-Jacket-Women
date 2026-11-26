@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { locales, localePath, t, type Locale } from "./i18n";
+import { indexedLocales, localePath, t, type Locale } from "./i18n";
 import { site } from "./site";
 
 type PageKey = "home" | "shop" | "guide" | "sizeGuide" | "faq" | "cart" | "checkout";
@@ -14,12 +14,18 @@ const pageKeys: Record<string, PageKey> = {
   "/checkout": "checkout",
 };
 
-// Gives a page its own address in one language: canonical points at that
-// language's address, every language version is listed for search engines, and
-// the title and description are written in that language where they exist.
+// Metadata for a page in one language: the title and description are written in
+// that language where they exist. A language whose page text is translated is
+// canonical to itself and lists its sister versions. Until then the English page
+// is the canonical one, because the content is the same.
 export function localizedMetadata(base: Metadata, lang: Locale, path: string): Metadata {
-  const languages: Record<string, string> = { "x-default": path };
-  for (const l of locales) languages[l] = localePath(l, path);
+  const translated = indexedLocales.includes(lang);
+  const canonical = translated ? localePath(lang, path) : path;
+  let languages: Record<string, string> | undefined;
+  if (translated) {
+    languages = { "x-default": path };
+    for (const l of indexedLocales) languages[l] = localePath(l, path);
+  }
   const key = pageKeys[path];
   const copy = key ? t(lang).pageMeta[key] : undefined;
   return {
@@ -27,13 +33,13 @@ export function localizedMetadata(base: Metadata, lang: Locale, path: string): M
     ...(copy ? { title: { absolute: `${copy.title} | ${site.name}` }, description: copy.description } : {}),
     alternates: {
       ...base.alternates,
-      canonical: localePath(lang, path),
-      languages,
+      canonical,
+      ...(languages ? { languages } : {}),
     },
     openGraph: {
       ...base.openGraph,
       ...(copy ? { title: `${copy.title} | ${site.name}`, description: copy.description } : {}),
-      url: localePath(lang, path),
+      url: canonical === "/" ? site.url : canonical,
     },
   };
 }

@@ -8,7 +8,10 @@ import {
   categoryBySlug,
   photoForCategory,
   productsIn,
+  styleCount,
 } from "@/lib/catalog";
+import { guides } from "@/lib/guides";
+import { pageMetadata } from "@/lib/metadata";
 import { breadcrumbSchema, faqSchema, itemListSchema } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductCard from "@/components/ProductCard";
@@ -32,13 +35,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const cat = categoryBySlug(slug);
   if (!cat) return {};
-  const path = `/category/${cat.slug}`;
-  return {
+  // A category with no styles yet is kept out of search results until it has some.
+  return pageMetadata({
     title: cat.title,
     description: cat.intro,
-    alternates: { canonical: path },
-    openGraph: { title: cat.title, description: cat.intro, url: path },
-  };
+    path: `/category/${cat.slug}`,
+    image: photoForCategory(cat),
+    index: productsIn(cat.slug).length > 0,
+  });
 }
 
 export default async function CategoryPage({ params }: { params: Params }) {
@@ -79,7 +83,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
             </div>
             <div>
               <dt>Styles</dt>
-              <dd>{list.length}</dd>
+              <dd>{styleCount(cat.slug)}</dd>
             </div>
             <div>
               <dt>Sizes</dt>
@@ -153,6 +157,13 @@ export default async function CategoryPage({ params }: { params: Params }) {
             <Link href="/guide#care" className="textlink">
               Care basics in the guide
             </Link>
+            <ul className="guide__list">
+              {guides.map((g) => (
+                <li key={g.slug}>
+                  <Link href={`/guide/${g.slug}`}>{g.title}</Link>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </section>
@@ -162,16 +173,31 @@ export default async function CategoryPage({ params }: { params: Params }) {
           <Reveal className="section-head">
             <h2 id="products-heading"><Split>{cat.name} styles</Split></h2>
             <span className="muted">
-              {list.length} styles. {cat.sizing === "apparel" ? "Sizes XS to XL." : "One size."}
+              {list.length > 0 ? `${list.length} styles. ` : "Coming soon. "}
+              {cat.sizing === "apparel" ? "Sizes XS to XL." : "One size."}
             </span>
           </Reveal>
-          <Stagger className="grid">
-            {list.map((product) => (
-              <StaggerItem key={product.slug}>
-                <ProductCard product={product} />
-              </StaggerItem>
-            ))}
-          </Stagger>
+          {list.length > 0 ? (
+            <Stagger className="grid">
+              {list.map((product) => (
+                <StaggerItem key={product.slug}>
+                  <ProductCard product={product} />
+                </StaggerItem>
+              ))}
+            </Stagger>
+          ) : (
+            <p className="prose">
+              No styles are listed here yet. Browse the{" "}
+              <Link href="/category/long-sleeve" className="textlink">
+                long sleeve jackets
+              </Link>{" "}
+              or the{" "}
+              <Link href="/category/sleeveless" className="textlink">
+                puffer vests
+              </Link>
+              .
+            </p>
+          )}
         </div>
       </section>
 
@@ -207,7 +233,7 @@ export default async function CategoryPage({ params }: { params: Params }) {
       </section>
 
       <JsonLd data={breadcrumbSchema(crumbs)} />
-      <JsonLd data={itemListSchema(cat.title, list)} />
+      {list.length > 0 ? <JsonLd data={itemListSchema(cat.title, list)} /> : null}
       <JsonLd data={faqSchema(cat.faqs)} />
     </>
   );

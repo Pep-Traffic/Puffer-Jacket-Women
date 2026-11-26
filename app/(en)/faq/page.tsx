@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Split from "@/components/Split";
 import { faqGroups, faqs } from "@/lib/faq";
+import { pageMetadata } from "@/lib/metadata";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import FaqTopics from "@/components/FaqTopics";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Puffer jacket questions for women",
   description:
-    "Answers to common questions about puffer jackets for women: fill and warmth, fit and layering, care, caps and hats, accessories, orders and returns.",
-  alternates: { canonical: "/faq" },
-};
+    "Answers to common questions about puffer jackets for women: warmth, waterproofing, sizing, layering, washing and drying, orders and returns.",
+  path: "/faq",
+});
 
 const crumbs = [
   { name: "Home", path: "/" },

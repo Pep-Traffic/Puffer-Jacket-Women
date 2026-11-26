@@ -8,7 +8,13 @@ export const site = {
   // PLACEHOLDER: confirm the real inbox before launch.
   contactEmail: "hello@pufferjacketwomen.com",
   description:
-    "Shop women's puffer jackets, sleeveless vests, short-sleeve layers, caps, hats and accessories in one premium store.",
+    "Women's puffer jackets and vests in sizes XS to XL, with plain advice on fit, fill, layering and care.",
+  // Shown in the footer once each real value is supplied.
+  contact: {
+    phone: "",
+    hours: "",
+    address: "",
+  },
   // Social profile links. Each icon in the footer becomes a link once its URL
   // is set. Empty until the profiles exist.
   socials: {

@@ -7,6 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { defaultShareImage } from "@/lib/metadata";
 
 const archivo = Outfit({
   subsets: ["latin"],
@@ -36,11 +37,13 @@ export const metadata: Metadata = {
     url: site.url,
     title: site.name,
     description: site.description,
+    images: [defaultShareImage.src],
   },
   twitter: {
     card: "summary_large_image",
     title: site.name,
     description: site.description,
+    images: [defaultShareImage.src],
   },
   robots: { index: true, follow: true },
 };

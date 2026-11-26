@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Split from "@/components/Split";
-import { categories, productsIn, products, photoForCategory } from "@/lib/catalog";
+import { categories, productsIn, products, photoForCategory, stockedCategories, styleCount } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/metadata";
 import { faqs } from "@/lib/faq";
 import { breadcrumbSchema, faqSchema, itemListSchema } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -13,12 +14,12 @@ import JsonLd from "@/components/JsonLd";
 import { FaqList } from "@/components/FaqList";
 import { Reveal, Stagger, StaggerItem } from "@/components/Motion";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "All puffer jackets for women",
   description:
-    "Shop every puffer jacket for women: long sleeve and sleeveless puffers, short sleeve layers, caps, hats and accessories, with a short guide to each category.",
-  alternates: { canonical: "/shop" },
-};
+    "Browse women's puffer jackets and puffer vests in funnel collar, hooded and longline styles, sizes XS to XL, with a short guide to each category.",
+  path: "/shop",
+});
 
 const crumbs = [
   { name: "Home", path: "/" },
@@ -45,12 +46,12 @@ export default function ShopPage() {
           <Reveal className="shop-hero__copy">
             <h1 id="shop-heading"><Split>All puffer jackets for women</Split></h1>
             <p className="hero__lede">
-              Every puffer jacket for women in one place: long sleeve, sleeveless, short sleeve, caps and hats, and
-              accessories. Each group starts with a short guide to choosing that category.
+              Every puffer jacket and vest for women in one place, grouped by sleeve length. Each group starts with a
+              short guide to choosing that category.
             </p>
             <p className="shop-hero__count">
-              <strong>{products.length} styles</strong> in {categories.length} categories. Apparel sizes run XS to XL.
-              Prices are confirmed before launch.
+              <strong>{products.length} styles</strong> in {stockedCategories().length} categories, with more categories
+              coming soon. Apparel sizes run XS to XL. Prices are confirmed before launch.
             </p>
           </Reveal>
 
@@ -61,7 +62,9 @@ export default function ShopPage() {
                   <PhotoFrame photo={photoForCategory(c)} ratio="4 / 3" />
                   <span className="shop-tile__row">
                     <span className="shop-tile__name">{c.name}</span>
-                    <span className="shop-tile__count">{productsIn(c.slug).length} styles</span>
+                    <span className="shop-tile__count">
+                      {productsIn(c.slug).length > 0 ? `${productsIn(c.slug).length} styles` : "Coming soon"}
+                    </span>
                   </span>
                 </a>
               </StaggerItem>
@@ -85,7 +88,7 @@ export default function ShopPage() {
             <CompareTable
               caption="Categories at a glance"
               columns={["Category", "Best for", "Styles"]}
-              rows={categories.map((c) => [c.name, c.bestFor, String(productsIn(c.slug).length)])}
+              rows={categories.map((c) => [c.name, c.bestFor, styleCount(c.slug)])}
             />
           </Reveal>
         </div>
@@ -119,7 +122,7 @@ export default function ShopPage() {
                     </div>
                     <div>
                       <dt>Styles</dt>
-                      <dd>{list.length}</dd>
+                      <dd>{styleCount(c.slug)}</dd>
                     </div>
                     <div>
                       <dt>Sizes</dt>

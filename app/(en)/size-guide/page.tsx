@@ -1,6 +1,7 @@
 import Split from "@/components/Split";
 import type { Metadata } from "next";
 import { faqGroups } from "@/lib/faq";
+import { pageMetadata } from "@/lib/metadata";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CompareTable from "@/components/CompareTable";
@@ -8,12 +9,12 @@ import JsonLd from "@/components/JsonLd";
 import { FaqList } from "@/components/FaqList";
 import { Reveal, Stagger, StaggerItem } from "@/components/Motion";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Puffer jacket size guide for women",
   description:
-    "How to measure for a women's puffer jacket, vest or layer: bust, waist, hips and sleeve length, plus a size chart and fit notes for each category.",
-  alternates: { canonical: "/size-guide" },
-};
+    "How to measure for a women's puffer jacket or vest: bust, waist, hips and sleeve length, what to do between sizes, and fit notes by category.",
+  path: "/size-guide",
+});
 
 const crumbs = [
   { name: "Home", path: "/" },

@@ -50,7 +50,8 @@ export default function HeroReel({ slides }: { slides: Slide[] }) {
             poster={s.poster}
             muted
             playsInline
-            preload={i === 0 ? "auto" : "metadata"}
+            // The poster shows at once; a film is downloaded only when it plays.
+            preload="none"
             aria-label={s.alt}
             aria-hidden={i !== idx}
             onTimeUpdate={(e) => {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { preload } from "react-dom";
 import Split from "@/components/Split";
 import {
   ArrowRight,
@@ -18,8 +19,9 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { categories, photoForCategory, products } from "@/lib/catalog";
 import { photos } from "@/lib/images";
-import { site } from "@/lib/site";
 import { faqs } from "@/lib/faq";
+import { guides } from "@/lib/guides";
+import { pageMetadata } from "@/lib/metadata";
 import { glossary } from "@/lib/glossary";
 import { faqSchema } from "@/lib/seo";
 import FeaturedCard from "@/components/FeaturedCard";
@@ -43,34 +45,12 @@ const homeTitle = "Puffer Jacket Women | Shop Women's Puffer Jackets";
 const homeDescription =
   "Discover women's puffer jackets in cropped, long, lightweight and quilted styles. Explore fashionable winter outerwear, colors and fits.";
 
-export const metadata: Metadata = {
-  title: { absolute: homeTitle },
+export const metadata: Metadata = pageMetadata({
+  title: homeTitle,
   description: homeDescription,
-  alternates: { canonical: "/" },
-  // Nested social fields replace the layout's values, so the full set is repeated here.
-  openGraph: {
-    type: "website",
-    siteName: site.name,
-    locale: site.locale,
-    url: site.url,
-    title: homeTitle,
-    description: homeDescription,
-    images: [
-      {
-        url: photos.winterField.src,
-        width: photos.winterField.width,
-        height: photos.winterField.height,
-        alt: photos.winterField.alt,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: homeTitle,
-    description: homeDescription,
-    images: [photos.winterField.src],
-  },
-};
+  path: "/",
+  absoluteTitle: true,
+});
 
 const layers: Layer[] = [
   {
@@ -116,8 +96,8 @@ const useCases = [
     icon: <Wind size={26} aria-hidden="true" />,
     title: "Windy walks",
     body: "A close weave and a high collar block the wind. A beanie keeps the ears warm when the gusts pick up.",
-    href: "/category/caps-hats",
-    label: "Shop caps and hats",
+    href: "/guide#head",
+    label: "Read about caps and hats",
     photo: photos.capsPortrait,
     position: "50% 30%",
   },
@@ -125,8 +105,8 @@ const useCases = [
     icon: <Sun size={26} aria-hidden="true" />,
     title: "Mild mornings",
     body: "A short sleeve layer under an open jacket works from breakfast through to the afternoon.",
-    href: "/category/short-sleeve",
-    label: "Shop short sleeve",
+    href: "/guide#layering",
+    label: "Read about layering",
     photo: photos.shortSleeve,
     position: "50% 35%",
   },
@@ -213,6 +193,8 @@ const details = [
 export default function HomePage() {
   const featured = products.filter((p) => p.featured);
   const homeFaqs = faqs.slice(0, 6);
+  // The first hero poster is the largest thing on screen, so it is fetched first.
+  preload("/videos/lux-1.webp", { as: "image", fetchPriority: "high" });
 
   return (
     <>
@@ -222,7 +204,7 @@ export default function HomePage() {
             <strong>Women&apos;s Puffer Jackets</strong>
           </h1>
           <p className="hero__lede">
-            Puffer jackets for women in long sleeve, sleeveless and short sleeve styles, plus caps, hats and accessories.
+            Puffer jackets and vests for women: funnel collar, hooded and longline styles in sizes XS to XL.
           </p>
           <div className="hero__actions">
             <Link href="/shop" className="btn btn--pill">
@@ -247,9 +229,9 @@ export default function HomePage() {
         </Reveal>
         <HeroReel
           slides={[
-            { src: "/videos/lux-1.mp4", poster: "/videos/lux-1.jpg", label: "Long sleeve", alt: "Woman in a mustard puffer jacket on a forest path. Long sleeve puffer jackets." },
-            { src: "/videos/lux-2.mp4", poster: "/videos/lux-2.jpg", label: "Caps and hats", alt: "Woman in a dark cap and wool coat in falling snow. Caps, hats and scarves." },
-            { src: "/videos/lux-3.mp4", poster: "/videos/lux-3.jpg", label: "Short sleeve", alt: "Woman in a striped knit top and grey shorts. Light short sleeve layers." },
+            { src: "/videos/lux-1.mp4", poster: "/videos/lux-1.webp", label: "Long sleeve", alt: "Woman in a mustard puffer jacket on a forest path. Long sleeve puffer jackets." },
+            { src: "/videos/lux-2.mp4", poster: "/videos/lux-2.webp", label: "Caps and hats", alt: "Woman in a dark cap and wool coat in falling snow. Caps, hats and scarves." },
+            { src: "/videos/lux-3.mp4", poster: "/videos/lux-3.webp", label: "Short sleeve", alt: "Woman in a striped knit top and grey shorts. Light short sleeve layers." },
           ]}
         />
       </section>
@@ -272,7 +254,8 @@ export default function HomePage() {
           <Reveal className="section-intro">
             <h2 id="categories-heading"><Split>Shop puffer jackets for women</Split></h2>
             <p>
-              Five categories of puffer jackets for women and layers. Start with the piece you need most, then add the layers around it.
+              Long sleeve puffer jackets and sleeveless vests are listed now, with more categories coming soon. Start
+              with the piece you need most.
             </p>
           </Reveal>
           <ul className="cats">
@@ -380,7 +363,9 @@ export default function HomePage() {
               </StaggerItem>
             ))}
           </Stagger>
-          <p className="featured__note">Photographs are stock images until product photography is added.</p>
+          {featured.some((p) => !p.photos?.length) ? (
+            <p className="featured__note">Some photographs are stock images until product photography is added.</p>
+          ) : null}
         </div>
       </section>
 
@@ -542,6 +527,13 @@ export default function HomePage() {
               Read the full guide
             </Link>
           </Reveal>
+          <ul className="guide__list guide__list--center" aria-label="Puffer jacket guides">
+            {guides.map((g) => (
+              <li key={g.slug}>
+                <Link href={`/guide/${g.slug}`}>{g.title}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -574,7 +566,7 @@ export default function HomePage() {
         <div className="container closing__grid">
           <Reveal>
             <h2 id="closing-heading"><Split>Find your puffer jacket for tomorrow&apos;s weather</Split></h2>
-            <p>Every category in one store. Start with a puffer, then add the vest, the cap or the scarf.</p>
+            <p>Start with a puffer jacket or vest, then build your layers around it.</p>
             <div className="closing__actions">
               <Link href="/shop" className="btn">
                 Shop the collection

@@ -153,7 +153,7 @@ export default function SiteHeader({ lang = "en" }: { lang?: Locale }) {
       >
         <div className="container site-header__inner">
           <Link href={localePath(lang, "/")} className="site-logo" aria-label={`${s.home}, Puffer Jacket Women`}>
-            <img src="/brand/logo.png" alt="Puffer Jacket Women logo" width={1822} height={482} />
+            <img src="/brand/logo-640.webp" alt="Puffer Jacket Women logo" width={640} height={169} />
           </Link>
 
           <nav className="nav" aria-label="Main">

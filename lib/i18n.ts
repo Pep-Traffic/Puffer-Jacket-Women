@@ -9,6 +9,11 @@ export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }
 
+// Languages whose page text is written in that language. The others still show
+// English body text, so search engines are pointed at the English page. Add a
+// language here once its pages are translated.
+export const indexedLocales: readonly Locale[] = ["en"];
+
 export function dirOf(lang: Locale): "ltr" | "rtl" {
   return lang === "ur" || lang === "ar" ? "rtl" : "ltr";
 }
@@ -50,6 +55,7 @@ export type Strings = {
   linkSize: string;
   linkBag: string;
   linkGuide: string;
+  linkAbout: string;
   linkCheckout: string;
   featCheckoutTitle: string;
   featCheckoutBody: string;
@@ -105,10 +111,11 @@ const en: Strings = {
   linkSize: "Size guide",
   linkBag: "Your bag",
   linkGuide: "Buying guide",
+  linkAbout: "About us",
   linkCheckout: "Checkout",
   featCheckoutTitle: "Secure checkout",
   featCheckoutBody: "Payment provider confirmed before launch",
-  featReturnsTitle: "Easy returns",
+  featReturnsTitle: "Returns",
   featReturnsBody: "Returns policy shown before you pay",
   featShipTitle: "Shipping",
   featShipBody: "Delivery confirmed at checkout",
@@ -166,10 +173,11 @@ const ur: Strings = {
   linkSize: "سائز گائیڈ",
   linkBag: "آپ کا بیگ",
   linkGuide: "خریداری گائیڈ",
+  linkAbout: "ہمارے بارے میں",
   linkCheckout: "چیک آؤٹ",
   featCheckoutTitle: "محفوظ چیک آؤٹ",
   featCheckoutBody: "ادائیگی فراہم کنندہ لانچ سے پہلے طے ہوگا",
-  featReturnsTitle: "آسان واپسی",
+  featReturnsTitle: "واپسی",
   featReturnsBody: "ادائیگی سے پہلے واپسی کی پالیسی دکھائی جاتی ہے",
   featShipTitle: "شپنگ",
   featShipBody: "چیک آؤٹ پر ترسیل کی تصدیق",
@@ -235,10 +243,11 @@ const ar: Strings = {
   linkSize: "دليل المقاسات",
   linkBag: "حقيبتك",
   linkGuide: "دليل الشراء",
+  linkAbout: "من نحن",
   linkCheckout: "الدفع",
   featCheckoutTitle: "دفع آمن",
   featCheckoutBody: "يُحدَّد مزوّد الدفع قبل الإطلاق",
-  featReturnsTitle: "إرجاع سهل",
+  featReturnsTitle: "الإرجاع",
   featReturnsBody: "تظهر سياسة الإرجاع قبل الدفع",
   featShipTitle: "الشحن",
   featShipBody: "يُؤكَّد التوصيل عند الدفع",
@@ -304,10 +313,11 @@ const hi: Strings = {
   linkSize: "साइज़ गाइड",
   linkBag: "आपका बैग",
   linkGuide: "खरीद गाइड",
+  linkAbout: "हमारे बारे में",
   linkCheckout: "चेकआउट",
   featCheckoutTitle: "सुरक्षित चेकआउट",
   featCheckoutBody: "भुगतान प्रदाता लॉन्च से पहले तय होगा",
-  featReturnsTitle: "आसान वापसी",
+  featReturnsTitle: "वापसी",
   featReturnsBody: "भुगतान से पहले वापसी नीति दिखाई जाएगी",
   featShipTitle: "शिपिंग",
   featShipBody: "चेकआउट पर डिलीवरी की पुष्टि",

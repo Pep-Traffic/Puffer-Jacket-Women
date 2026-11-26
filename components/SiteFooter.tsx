@@ -33,6 +33,13 @@ export default function SiteFooter({ lang = "en" }: { lang?: Locale }) {
   const year = new Date().getFullYear();
   const L = (path: string) => localePath(lang, path);
 
+  // Only details that have been supplied are shown.
+  const contactLines = [
+    { icon: PhoneCall, text: site.contact.phone as string },
+    { icon: Clock, text: site.contact.hours as string },
+    { icon: MapPin, text: site.contact.address as string },
+  ].filter((line) => line.text);
+
   const features = [
     { icon: LockSimple, title: s.featCheckoutTitle, body: s.featCheckoutBody },
     { icon: ArrowsClockwise, title: s.featReturnsTitle, body: s.featReturnsBody },
@@ -64,6 +71,8 @@ export default function SiteFooter({ lang = "en" }: { lang?: Locale }) {
       title: s.colInfo,
       links: [
         { href: L("/guide"), label: s.linkGuide },
+        // The About page exists in English only.
+        { href: "/about", label: s.linkAbout },
         { href: L("/checkout"), label: s.linkCheckout },
         { href: L("/"), label: s.home },
       ],
@@ -75,7 +84,7 @@ export default function SiteFooter({ lang = "en" }: { lang?: Locale }) {
       <div className="container">
         <section className="ft-join" aria-labelledby="join-heading">
           <div className="ft-join__brand">
-            <img src="/brand/logo.png" alt="Puffer Jacket Women logo" width={1822} height={482} loading="lazy" />
+            <img src="/brand/logo-640.webp" alt="Puffer Jacket Women logo" width={640} height={169} loading="lazy" />
           </div>
           <div className="ft-join__copy">
             <h2 id="join-heading">{s.joinHeading}</h2>
@@ -88,8 +97,7 @@ export default function SiteFooter({ lang = "en" }: { lang?: Locale }) {
           <div className="ft__col ft__brand">
             <p className="ft__brand-name">{site.name}</p>
             <p className="ft__brand-body">
-              Women&apos;s puffer jackets, vests, short sleeve layers, caps, hats and accessories, with fit and fill
-              explained on every page.
+              Women&apos;s puffer jackets and vests, with plain advice on fit, fill, layering and care.
             </p>
           </div>
 
@@ -128,18 +136,12 @@ export default function SiteFooter({ lang = "en" }: { lang?: Locale }) {
             <EnvelopeSimple size={18} aria-hidden="true" />
             <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
           </p>
-          <p>
-            <PhoneCall size={18} aria-hidden="true" />
-            <span>{s.contactPhone}</span>
-          </p>
-          <p>
-            <Clock size={18} aria-hidden="true" />
-            <span>{s.contactHours}</span>
-          </p>
-          <p>
-            <MapPin size={18} aria-hidden="true" />
-            <span>{s.contactAddress}</span>
-          </p>
+          {contactLines.map(({ icon: Icon, text }) => (
+            <p key={text}>
+              <Icon size={18} aria-hidden="true" />
+              <span>{text}</span>
+            </p>
+          ))}
         </div>
 
         <div className="ft__bar">

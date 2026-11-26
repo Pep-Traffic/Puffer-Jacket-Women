@@ -12,7 +12,8 @@ import {
   sizesFor,
 } from "@/lib/catalog";
 import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/seo";
-import { site } from "@/lib/site";
+import { guidesForProduct } from "@/lib/guides";
+import { pageMetadata } from "@/lib/metadata";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ProductPurchase from "@/components/ProductPurchase";
 import ProductCard from "@/components/ProductCard";
@@ -34,32 +35,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = productBySlug(slug);
   if (!product) return {};
-  const path = `/product/${product.slug}`;
   const sizeLine = categoryBySlug(product.category)?.sizing === "apparel" ? "Sizes XS to XL." : "One size.";
-  const description = `${product.name} for women in ${product.colour.toLowerCase()}. ${product.summary} ${sizeLine} Price to confirm.`;
-  const title = `${product.name} for women`;
-  const photo = photoForProduct(product);
-  // Nested social fields replace the layout's values, so the full set is repeated here.
-  return {
-    title,
-    description,
-    alternates: { canonical: path },
-    openGraph: {
-      type: "website",
-      siteName: site.name,
-      locale: site.locale,
-      title,
-      description,
-      url: path,
-      images: [{ url: photo.src, width: photo.width, height: photo.height, alt: photo.alt }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [photo.src],
-    },
-  };
+  return pageMetadata({
+    title: `${product.name} for women`,
+    description: `${product.summary} ${sizeLine} See photos, fit notes and care advice.`,
+    path: `/product/${product.slug}`,
+    image: photoForProduct(product),
+  });
 }
 
 export default async function ProductPage({ params }: { params: Params }) {
@@ -68,22 +50,42 @@ export default async function ProductPage({ params }: { params: Params }) {
   const category = product ? categoryBySlug(product.category) : undefined;
   if (!product || !category) notFound();
 
-  const related = productsIn(category.slug)
-    .filter((p) => p.slug !== product.slug)
-    .slice(0, 3);
+  // The next three styles after this one, so every product receives links.
+  const siblings = productsIn(category.slug);
+  const position = siblings.findIndex((p) => p.slug === product.slug);
+  const related = [...siblings.slice(position + 1), ...siblings.slice(0, position)].slice(0, 3);
+
+  const { length, neck, front, pockets, quilting } = product.details;
+  const colours = colourOptionsFor(product).map((o) => o.colour);
+  const sizeRange = sizesFor(product.category);
+  const guideLinks = guidesForProduct(product.slug);
+  const hasHood = /\bhood\b/i.test(neck);
 
   const questions = [
     {
-      q: "What are the shell and fill?",
-      a: "The shell fabric and the fill are confirmed before launch. They will appear in the specification table on this page.",
+      q: `What length is the ${product.name}?`,
+      a: `The ${product.name} is ${length === "Longline" ? "a longline coat" : `cut to the ${length.toLowerCase()}`}.`,
     },
     {
-      q: "How does this style fit?",
-      a: `Use the size guide and the fit notes for ${category.name.toLowerCase()}. Compare your measurements with a piece you already wear and like.`,
+      q: `Does the ${product.name} have a hood?`,
+      a: `${hasHood ? "Yes" : "No hood is listed for this style"}. Neckline: ${neck.toLowerCase()}.`,
+    },
+    {
+      q: `How does the ${product.name} close, and what pockets does it have?`,
+      a: `Front: ${front.toLowerCase()}. Pockets: ${pockets.toLowerCase()}.`,
+    },
+    {
+      q: `What sizes and colours is the ${product.name} listed in?`,
+      a: `It is listed in sizes ${sizeRange[0]} to ${sizeRange[sizeRange.length - 1]}, in ${colours.join(" and ").toLowerCase()}.`,
     },
     {
       q: "How should I store it?",
       a: "Store it loosely folded or hung. Avoid long periods compressed in a small bag, because that can flatten the fill.",
+    },
+    {
+      q: "What are the shell and fill?",
+      a: "The shell fabric and the fill are confirmed before launch. They will appear in the specification table on this page.",
+      pending: true,
     },
   ];
 
@@ -108,6 +110,7 @@ export default async function ProductPage({ params }: { params: Params }) {
         sizing={category.sizing}
         sizes={sizesFor(product.category)}
         options={colourOptionsFor(product)}
+        stock={!product.photos?.length}
       />
 
       <section className="section section--tint" aria-labelledby="details-heading">
@@ -120,8 +123,8 @@ export default async function ProductPage({ params }: { params: Params }) {
           </Reveal>
           <Reveal delay={0.05} className="pdp-details__body">
             <p className="prose">
-              {product.summary} Shell, fill and closure are confirmed before launch. This women's style sits in the{" "}
-              {category.name.toLowerCase()} range, so you can compare it with the rest of the collection.
+              {product.summary} It is a women&apos;s style in {colours.join(" and ").toLowerCase()}. Shell and fill are
+              still to be confirmed.
             </p>
             <p className="prose">{category.paragraphs[2]}</p>
             {category.looks.map((look) => (
@@ -130,6 +133,18 @@ export default async function ProductPage({ params }: { params: Params }) {
               </p>
             ))}
             <dl className="specs">
+              <dt>Colour</dt>
+              <dd>{colours.join(", ")}</dd>
+              <dt>Length</dt>
+              <dd>{length}</dd>
+              <dt>Collar or hood</dt>
+              <dd>{neck}</dd>
+              <dt>Front</dt>
+              <dd>{front}</dd>
+              <dt>Pockets</dt>
+              <dd>{pockets}</dd>
+              <dt>Quilting</dt>
+              <dd>{quilting}</dd>
               <dt>Shell</dt>
               <dd>To confirm</dd>
               <dt>Fill</dt>
@@ -147,6 +162,15 @@ export default async function ProductPage({ params }: { params: Params }) {
                 Buying guide
               </Link>
             </p>
+            {guideLinks.length > 0 ? (
+              <ul className="guide__list">
+                {guideLinks.map((g) => (
+                  <li key={g.slug}>
+                    <Link href={`/guide/${g.slug}`}>{g.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </Reveal>
         </div>
       </section>

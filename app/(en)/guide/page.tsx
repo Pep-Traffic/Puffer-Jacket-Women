@@ -2,19 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Split from "@/components/Split";
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr";
-import { breadcrumbSchema } from "@/lib/seo";
+import { guides } from "@/lib/guides";
+import { pageMetadata } from "@/lib/metadata";
+import { articleSchema, breadcrumbSchema } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CompareTable from "@/components/CompareTable";
 import JsonLd from "@/components/JsonLd";
 import ReadingProgress from "@/components/ReadingProgress";
 import { Reveal } from "@/components/Motion";
 
-export const metadata: Metadata = {
-  title: "Puffer jacket buying guide for women",
-  description:
-    "How to choose a puffer jacket for women: weather, fill and fill power, shell fabric, sleeve length, fit, layering with vests and caps, care and common mistakes.",
-  alternates: { canonical: "/guide" },
-};
+const title = "Puffer jacket buying guide for women";
+const description =
+  "How to choose a puffer jacket for women: weather, fill and fill power, shell fabric, sleeve length, fit, layering, care and common mistakes.";
+
+export const metadata: Metadata = pageMetadata({ title, description, path: "/guide", type: "article" });
 
 const crumbs = [
   { name: "Home", path: "/" },
@@ -32,6 +33,7 @@ const sections = [
   { id: "care", title: "Care that keeps the loft" },
   { id: "mistakes", title: "Common mistakes to avoid" },
   { id: "value", title: "Where to spend" },
+  { id: "articles", title: "More puffer guides" },
 ];
 
 const fitChecks = [
@@ -84,6 +86,12 @@ export default function GuidePage() {
               accessories.
             </p>
           </Reveal>
+
+          <p className="guide__answer">
+            To choose a women&apos;s puffer jacket, start with the coldest weather you expect. Then pick the fill (down
+            for dry cold, synthetic for damp), the length (waist, hip or long) and a fit that closes over a knit without
+            pulling.
+          </p>
 
           <Reveal>
             <section id="weather" className="guide__section" aria-labelledby="weather-heading">
@@ -275,6 +283,20 @@ export default function GuidePage() {
           </Reveal>
 
           <Reveal>
+            <section id="articles" className="guide__section" aria-labelledby="articles-heading">
+              <h2 id="articles-heading"><Split>More puffer guides</Split></h2>
+              <ul className="guide__list">
+                {guides.map((g) => (
+                  <li key={g.slug}>
+                    <Link href={`/guide/${g.slug}`}>{g.title}</Link>
+                    : {g.card}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </Reveal>
+
+          <Reveal>
             <p className="guide__next">
               Still deciding? Read the <Link href="/faq" className="textlink">questions page</Link>, check the{" "}
               <Link href="/size-guide" className="textlink">size guide</Link>, or browse the{" "}
@@ -284,6 +306,16 @@ export default function GuidePage() {
         </article>
       </div>
 
+      <JsonLd
+        data={articleSchema({
+          title,
+          description,
+          path: "/guide",
+          published: "2026-11-20",
+          updated: "2026-11-26",
+          image: "/images/winter-field-wide.webp",
+        })}
+      />
       <JsonLd data={breadcrumbSchema(crumbs)} />
     </>
   );

@@ -8,7 +8,7 @@ import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
-import { dirOf, isLocale, t, translatedLocales, type Locale } from "@/lib/i18n";
+import { dirOf, indexedLocales, isLocale, t, translatedLocales, type Locale } from "@/lib/i18n";
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-ui", display: "swap" });
 const arabic = Noto_Sans_Arabic({
@@ -76,7 +76,10 @@ export default async function LocaleLayout({
         </a>
         <CartProvider>
           <SiteHeader lang={lang} />
-          <main id="main">{children}</main>
+          {/* Page text that is not translated yet is marked as English. */}
+          <main id="main" lang={indexedLocales.includes(lang) ? undefined : "en"}>
+            {children}
+          </main>
           <SiteFooter lang={lang} />
         </CartProvider>
         <JsonLd data={organizationSchema()} />
